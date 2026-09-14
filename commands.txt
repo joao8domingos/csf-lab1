@@ -1,0 +1,18 @@
+## Record the analysis environment
+
+{
+date --utc --iso-8601=seconds
+grep '^PRETTY_NAME=' /etc/os-release
+uname -a
+locale
+sha256sum --version | head -n 1
+stat --version | head -n 1
+file --version | head -n 1
+strings --version | head -n 1
+john --list=build-info | head -n 4
+unzip -v | head -n 1
+python3 --version
+} | tee results/environment-and-tools.txt
+
+
+
