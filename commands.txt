@@ -15,4 +15,22 @@ python3 --version
 } | tee results/environment-and-tools.txt
 
 
+## Mirroring and Evidence Preservation of Remote Web Resource
+
+date --utc --iso-8601=seconds
+wget --no-check-certificate -p -k -P artifacts/fenix-site https://fenix.dpss.inesc-id.pt/index.html
+
+
+
+## Record the original artifact’s path, size, timestamps, type, and SHA-256 digest:
+
+find artifacts/fenix-site -type f -exec sh -c '
+  for f; do
+    stat -c "%n|%s|%y|%z" "$f"
+    file "$f"
+    sha256sum "$f"
+    echo "---"
+  done
+' sh {} +
+
 
