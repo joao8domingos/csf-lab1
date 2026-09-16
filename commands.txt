@@ -516,3 +516,428 @@ O ficheiro até agora parece estar bem
 Conclusão Forense
 Ficheiro Legítimo/Standard: O script cas.min.js é o código de suporte legítimo do frontend do CAS do Técnico, responsável apenas por animações de interface, memória local de preferências e personalização do fundo.
 Isolamento do Mecanismo Malicioso: Como o JavaScript não faz exfiltração oculta em segundo plano, a captura de credenciais assenta exclusivamente na submissão direta do formulário HTML via POST para a URL [https://fenix.dpss.inesc-id.pt/cas/login](https://fenix.dpss.inesc-id.pt/cas/login), reforçando as conclusões tiradas na análise do index.html.
+
+
+
+
+
+
+
+
+
+
+
+## Images
+
+──(joao㉿kali)-[~/…/csf2627-lab1/artifacts/fenix-site-working-copy/fenix.dpss.inesc-id.pt]
+└─$ exiftool images/icones/*
+======== images/icones/ccidadao.png
+ExifTool Version Number         : 13.55
+File Name                       : ccidadao.png
+Directory                       : images/icones
+File Size                       : 784 bytes
+File Modification Date/Time     : 2026:09:10 00:11:16+01:00
+File Access Date/Time           : 2026:09:15 19:55:45+01:00
+File Inode Change Date/Time     : 2026:09:15 19:55:43+01:00
+File Permissions                : -rwxrwx---
+File Type                       : PNG
+File Type Extension             : png
+MIME Type                       : image/png
+Image Width                     : 80
+Image Height                    : 50
+Bit Depth                       : 8
+Color Type                      : RGB with Alpha
+Compression                     : Deflate/Inflate
+Filter                          : Adaptive
+Interlace                       : Noninterlaced
+Pixels Per Unit X               : 2835
+Pixels Per Unit Y               : 2835
+Pixel Units                     : meters
+Software                        : Adobe ImageReady
+Image Size                      : 80x50
+Megapixels                      : 0.004
+======== images/icones/ccidadao.svg
+ExifTool Version Number         : 13.55
+File Name                       : ccidadao.svg
+Directory                       : images/icones
+File Size                       : 1625 bytes
+File Modification Date/Time     : 2026:09:10 00:11:16+01:00
+File Access Date/Time           : 2026:09:15 09:46:33+01:00
+File Inode Change Date/Time     : 2026:09:15 09:21:52+01:00
+File Permissions                : -rwxrwx---
+File Type                       : SVG
+File Type Extension             : svg
+MIME Type                       : image/svg+xml
+SVG Version                     : 1.1
+ID                              : Layer_1
+Xmlns                           : http://www.w3.org/2000/svg
+Tag X                           : 0px
+Tag Y                           : 0px
+Image Width                     : 80
+Image Height                    : 50
+View Box                        : 0 0 80 50
+Enable-background               : new 0 0 80 50
+Image Size                      : 80x50
+Megapixels                      : 0.004
+======== images/icones/eid_europeu.png
+ExifTool Version Number         : 13.55
+File Name                       : eid_europeu.png
+Directory                       : images/icones
+File Size                       : 1126 bytes
+File Modification Date/Time     : 2026:09:10 00:11:16+01:00
+File Access Date/Time           : 2026:09:15 19:55:36+01:00
+File Inode Change Date/Time     : 2026:09:15 09:21:52+01:00
+File Permissions                : -rwxrwx---
+File Type                       : PNG
+File Type Extension             : png
+MIME Type                       : image/png
+Image Width                     : 80
+Image Height                    : 50
+Bit Depth                       : 8
+Color Type                      : RGB with Alpha
+Compression                     : Deflate/Inflate
+Filter                          : Adaptive
+Interlace                       : Noninterlaced
+Pixels Per Unit X               : 2835
+Pixels Per Unit Y               : 2835
+Pixel Units                     : meters
+Software                        : Adobe ImageReady
+Image Size                      : 80x50
+Megapixels                      : 0.004
+======== images/icones/eid_europeu.svg
+ExifTool Version Number         : 13.55
+File Name                       : eid_europeu.svg
+Directory                       : images/icones
+File Size                       : 3.2 kB
+File Modification Date/Time     : 2026:09:10 00:11:16+01:00
+File Access Date/Time           : 2026:09:15 09:46:33+01:00
+File Inode Change Date/Time     : 2026:09:15 09:21:52+01:00
+File Permissions                : -rwxrwx---
+File Type                       : SVG
+File Type Extension             : svg
+MIME Type                       : image/svg+xml
+SVG Version                     : 1.1
+ID                              : Layer_1
+Xmlns                           : http://www.w3.org/2000/svg
+Tag X                           : 0px
+Tag Y                           : 0px
+Image Width                     : 80
+Image Height                    : 50
+View Box                        : 0 0 80 50
+Enable-background               : new 0 0 80 50
+Image Size                      : 80x50
+Megapixels                      : 0.004
+    4 image files read
+
+
+
+Os metadados extraídos pelo exiftool confirmam que as imagens da diretoria images/icones/ são recursos legítimos e sem anomalias.
+Análise dos Resultados
+Software de Origem Padrão: As imagens PNG (ccidadao.png e eid_europeu.png) indicam o campo Software: Adobe ImageReady, um padrão comum na exportação de ativos gráficos de interfaces web antigas ou oficiais.
+Formatos Vectoriais Limpos: Os ficheiros SVG (.svg) mantêm a estrutura XML standard de ícones web (SVG Version 1.1, definições de Layer_1 e ViewBox).
+Ausência de Metadados Suspeitos: Não existem campos arbitrários com payloads codificados (como textos longos em Base64, comentários incomuns ou scripts PHP/JS embutidos em tags EXIF).
+Dimensões e Tamanhos Reduzidos: Os tamanhos de ficheiro (784 bytes a 3.2 kB) são perfeitamente condizentes com ícones de 80x50 pixels, descartando a presença de overlays de grandes dimensões escondidos nos ficheiros.
+
+
+
+
+
+┌──(joao㉿kali)-[~/…/csf2627-lab1/artifacts/fenix-site-working-copy/fenix.dpss.inesc-id.pt]
+└─$ binwalk images/icones/*
+
+Scan Time:     2026-09-15 20:03:03
+Target File:   /home/joao/CSF/csf2627-lab1/artifacts/fenix-site-working-copy/fenix.dpss.inesc-id.pt/images/icones/ccidadao.png
+MD5 Checksum:  5a37e14f07715a6f75bc1ade443e620e
+Signatures:    436
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+0             0x0             PNG image, 80 x 50, 8-bit/color RGBA, non-interlaced
+99            0x63            Zlib compressed data, best compression
+
+
+Scan Time:     2026-09-15 20:03:03
+Target File:   /home/joao/CSF/csf2627-lab1/artifacts/fenix-site-working-copy/fenix.dpss.inesc-id.pt/images/icones/ccidadao.svg
+MD5 Checksum:  4e9862d19937201105623c93fd74feab
+Signatures:    436
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+0             0x0             XML document, version: "1.0"
+
+
+Scan Time:     2026-09-15 20:03:03
+Target File:   /home/joao/CSF/csf2627-lab1/artifacts/fenix-site-working-copy/fenix.dpss.inesc-id.pt/images/icones/eid_europeu.png
+MD5 Checksum:  98a856f7a5017370d58ec404731aeb7e
+Signatures:    436
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+0             0x0             PNG image, 80 x 50, 8-bit/color RGBA, non-interlaced
+99            0x63            Zlib compressed data, best compression
+
+
+Scan Time:     2026-09-15 20:03:03
+Target File:   /home/joao/CSF/csf2627-lab1/artifacts/fenix-site-working-copy/fenix.dpss.inesc-id.pt/images/icones/eid_europeu.svg
+MD5 Checksum:  7969eb7aca9015e4da5b7a1dbca364bc
+Signatures:    436
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+0             0x0             XML document, version: "1.0"
+
+
+
+
+Análise dos Resultados do Binwalk
+Ficheiros PNG (ccidadao.png e eid_europeu.png):
+Offset 0: Identificado corretamente como imagem PNG (80x50, RGBA).
+Offset 99 (Zlib compressed data): É o comportamento standard e esperado de imagens PNG. O formato PNG utiliza compressão Zlib (algoritmo Deflate) para armazenar os pixéis da imagem no bloco IDAT. Não se trata de um ficheiro ZIP escondido, mas sim do próprio conteúdo da imagem.
+Ficheiros SVG (ccidadao.svg e eid_europeu.svg):
+Offset 0: Reconhecidos estritamente como documentos XML válidos, sem blocos executáveis ou streams de dados estranhos.
+
+
+
+
+
+
+
+
+
+──(joao㉿kali)-[~/…/csf2627-lab1/artifacts/fenix-site-working-copy/fenix.dpss.inesc-id.pt]
+└─$ openssl s_client -connect fenix.dpss.inesc-id.pt:443 -showcerts
+Connecting to 146.193.41.5
+CONNECTED(00000003)
+depth=3 C=US, O=Internet Security Research Group, CN=ISRG Root X1
+verify return:1
+depth=2 C=US, O=ISRG, CN=Root YR
+verify return:1
+depth=1 C=US, O=Let's Encrypt, CN=YR2
+verify return:1
+depth=0 CN=*.dpss.inesc-id.pt
+verify return:1
+---
+Certificate chain
+ 0 s:CN=*.dpss.inesc-id.pt
+   i:C=US, O=Let's Encrypt, CN=YR2
+   a:PKEY: RSA, 2048 (bit); sigalg: sha256WithRSAEncryption
+   v:NotBefore: Aug 30 21:45:13 2026 GMT; NotAfter: Nov 28 21:45:12 2026 GMT
+-----BEGIN CERTIFICATE-----
+MIIFMzCCBBugAwIBAgISBXytG+JBPhlrvDngeB06siVLMA0GCSqGSIb3DQEBCwUA
+MDMxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MQwwCgYDVQQD
+EwNZUjIwHhcNMjYwODMwMjE0NTEzWhcNMjYxMTI4MjE0NTEyWjAdMRswGQYDVQQD
+DBIqLmRwc3MuaW5lc2MtaWQucHQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK
+AoIBAQCVwA1gVzcEBaceRVAccOeSO5l8WNF61yoTiWPELddUYaJdPVnwP3V4GoTV
+awvW3Ug7iB8gKrx8i1DsjYdkfWvfFVIKdvMKZL0gY70gLThEJFdnXJH8OwNjVKTP
+eqoUtDvGlU8V4FISoKekfYXHeb3Y+93bGNN4iQDYdNaBT9//nHPWytVDGmSJK4+1
+OzFgLoTClDQtvB9LO3S/Op7QKOJ5RLutrNKB6vrtrfeqdzXN4BFBHK5vZASHcf3S
+2qmtnq//kFppm+xxRRGXQEVC/8ZjjV4Mb4PJ4K+gPevX/ztvdYGzmZpq0VmR/NxK
+/QjFNurvHupur9fv+skehveefrSfAgMBAAGjggJVMIICUTAOBgNVHQ8BAf8EBAMC
+BaAwEwYDVR0lBAwwCgYIKwYBBQUHAwEwDAYDVR0TAQH/BAIwADAdBgNVHQ4EFgQU
+ikBwYRSdw/bMblSZ2yhwBheVhDAwHwYDVR0jBBgwFoAUQBUtJnntMiCe35pyHdYy
+H4EMgQwwMwYIKwYBBQUHAQEEJzAlMCMGCCsGAQUFBzAChhdodHRwOi8veXIyLmku
+bGVuY3Iub3JnLzBTBgNVHREETDBKghIqLmRwc3MuaW5lc2MtaWQucHSCESouZ3Nk
+LmluZXNjLWlkLnB0ghBkcHNzLmluZXNjLWlkLnB0gg9nc2QuaW5lc2MtaWQucHQw
+EwYDVR0gBAwwCjAIBgZngQwBAgEwLgYDVR0fBCcwJTAjoCGgH4YdaHR0cDovL3ly
+Mi5jLmxlbmNyLm9yZy83Ni5jcmwwggELBgorBgEEAdZ5AgQCBIH8BIH5APcAdQDX
+bX0Q0af1d8LH6V/XAL/5gskzWmXh0LMBcxfAyMVpdwAAAaBU18u8AAAEAwBGMEQC
+IEh3rvcFFyHvZ5vVH53wVfiF7ccDxW9WJ9UzbPiGbhUiAiBkzgxVrYqw3UHCM4WY
+zCIpfIhk1qRR9DIQ7T1+1FWujwB+ACbjZG5YaSEjvDQ/RyQ1mzeSzSRaiNgV05Mz
+/ZkYq0cjAAABoFTXxLwACAAABQA68CwcBAMARzBFAiATlIk2R95oMitipjVr7FOD
+UT5L+IbJW/BBBmKMxYJ1fwIhAP2ivtxLZ3s3nZIPwkqzPVJY8y05KZ+/MV3jsA8D
+1U78MA0GCSqGSIb3DQEBCwUAA4IBAQCFtpRI3IcIMyXFsV3AeAsVUA0NiFrRQyWj
+UPJNQq5rLFrSpwZ/tibMbQz5O0Bt0217TR0TVWq9XBKzl6VxguxIhbDs+RTYrKLj
+Ri286vgtEkfABKOj5LS3zhIA0F+6SeBpfD3ktlXZGT/5kYljAZ8209mWLTcAf/4p
+0sHIZ6Ncva82TAp+kZGZxeu8JWx+W7YblCCRtPOusKtGZfz2DFZ/VAVEnj47EJ3/
+y67vLTMv8kfyaYFHtBsjyEi+W53s5pM126XS+GyFXZFXwefrl+NjJhWlrVLAZECw
+x7ReA5XZDELQUC3Gol04Nwm9ASAe6zArtYMzlTfRz60j6Qj3fW6O
+-----END CERTIFICATE-----
+ 1 s:C=US, O=Let's Encrypt, CN=YR2
+   i:C=US, O=ISRG, CN=Root YR
+   a:PKEY: RSA, 2048 (bit); sigalg: sha256WithRSAEncryption
+   v:NotBefore: Sep  3 00:00:00 2025 GMT; NotAfter: Sep  2 23:59:59 2028 GMT
+-----BEGIN CERTIFICATE-----
+MIIE2jCCAsKgAwIBAgIQTr0klH4k05SALYSlL9WzGTANBgkqhkiG9w0BAQsFADAu
+MQswCQYDVQQGEwJVUzENMAsGA1UEChMESVNSRzEQMA4GA1UEAxMHUm9vdCBZUjAe
+Fw0yNTA5MDMwMDAwMDBaFw0yODA5MDIyMzU5NTlaMDMxCzAJBgNVBAYTAlVTMRYw
+FAYDVQQKEw1MZXQncyBFbmNyeXB0MQwwCgYDVQQDEwNZUjIwggEiMA0GCSqGSIb3
+DQEBAQUAA4IBDwAwggEKAoIBAQDZ0LxwBppqh84luqMerV/eeL/fXQ7mLQQv1Lnp
+WKZbyvGpx6wh6AfnslAnF6ewTkcHA+gSOoBvm3Dfm06AuGiF+KRut4fAcowqnAQQ
+CW98+QPP/eOv/wug7Iyk4NkOxf2I6g2f55T6nJoOTLFcukeRq80JGQEYan+dPFr9
+OGUgQK2hGKgNkW87pappsOAuUJcroYhRt5uUis4qaZireiseu32gzDJNBAiKtsvd
+6HX4v25bpkRNcS/B/Gtc9kVbUpD+2PLPxdei3Tim55k4tfAEXwD2qyiPTxrTNq6l
+N+AMr5g2c1dNqkOTwjxeV6L5lpP1rGiYvLnRaPlOqyZRPW+5AgMBAAGjge4wgesw
+DgYDVR0PAQH/BAQDAgGGMBMGA1UdJQQMMAoGCCsGAQUFBwMBMBIGA1UdEwEB/wQI
+MAYBAf8CAQAwHQYDVR0OBBYEFEAVLSZ57TIgnt+ach3WMh+BDIEMMB8GA1UdIwQY
+MBaAFN7nW2DQIm1AKH0/DQH+pLVStFGUMDIGCCsGAQUFBwEBBCYwJDAiBggrBgEF
+BQcwAoYWaHR0cDovL3lyLmkubGVuY3Iub3JnLzATBgNVHSAEDDAKMAgGBmeBDAEC
+ATAnBgNVHR8EIDAeMBygGqAYhhZodHRwOi8veXIuYy5sZW5jci5vcmcvMA0GCSqG
+SIb3DQEBCwUAA4ICAQB0ZUQWZ9/Yn9COEpo+JfecMnB0h0vwDm/M66IqXqw3LoaL
+mx9lZvRTeDIS67PUeI3yCA2W6PKRD0/FE/G57lOmS+Xy5AaaL00ICGOqjNcCaMWW
+8o8nevHOd4i4lqgtznE/28QwlcdJyF8yBiWHpnyjhEpmNWJURgOCOg2xpwRMBCsj
+MScqYPtOhBeuYQvSwAEeTML2Ukh6uGuX4E14q65Ja8cdjF5bAldnP1eE4FBaAwsZ
+G2fOqqrKV03Y85Nw2btedP1AtliQuJZs/Jo/gXxXdc7LrH3McgnpnbTiAncX7yES
+hP6kzQejllqMCIt52HOjxDGWafS7Xw+DKwqmH+Eqy8dcbOuag/1AYlQoKNVK3F5q
+Hh6tEDiMqQcLIibGKteE6iHo4A/bIScbzrhXUYuism42ZYzmc48FMVIH3qy4L84E
+TdAH2gtxw0PAhvRVXp8HP7wfngpzsN/8xOTpeRSbM4+Qbc56G6+Bifmv6sk1ieQb
+NA3wJdl4DDUuQSV8hBgx6zoI1ZSGORprDFux7c6rhc77QZMSRrEgomBeklervEve
+86ylWmZ3WWHV6RLMi8xNvjd71r4EPIGgY7BZU/VPBkq+uA7Gb6mbJnFgV43uh3xy
+LRFgxIAphIukwTGSMZZR+AI+Qnp0BYTWovHXozOf3H8r6hozEoT02JHn0AeTfA==
+-----END CERTIFICATE-----
+ 2 s:C=US, O=ISRG, CN=Root YR
+   i:C=US, O=Internet Security Research Group, CN=ISRG Root X1
+   a:PKEY: RSA, 4096 (bit); sigalg: sha256WithRSAEncryption
+   v:NotBefore: May 13 00:00:00 2026 GMT; NotAfter: Sep  2 23:59:59 2032 GMT
+-----BEGIN CERTIFICATE-----
+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
+-----END CERTIFICATE-----
+---
+Server certificate
+subject=CN=*.dpss.inesc-id.pt
+issuer=C=US, O=Let's Encrypt, CN=YR2
+---
+No client certificate CA names sent
+Peer signing digest: SHA256
+Peer signature type: rsa_pss_rsae_sha256
+Negotiated TLS1.3 group: X25519MLKEM768
+---
+SSL handshake has read 5767 bytes and written 1769 bytes
+Verification: OK
+---
+New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384
+Protocol: TLSv1.3
+Server public key is 2048 bit
+This TLS version forbids renegotiation.
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+Early data was not sent
+Verify return code: 0 (ok)
+---
+---
+Post-Handshake New Session Ticket arrived:
+SSL-Session:
+    Protocol  : TLSv1.3
+    Cipher    : TLS_AES_256_GCM_SHA384
+    Session-ID: 4B7BB60BE6F0D6A09371A7D19534FE1F853FF1EE8DD81C941CD3E6D557FE2969
+    Session-ID-ctx: 
+    Resumption PSK: B960842F941432E3B20FA4D24F8B110CBD35E43261BA77A2D44C82BB242554AC85A0847F439BD4E242139EDE03E93CCF
+    PSK identity: None
+    PSK identity hint: None
+    SRP username: None
+    TLS session ticket lifetime hint: 300 (seconds)
+    TLS session ticket:
+    0000 - 63 91 a9 5e 34 15 80 fa-b6 bf df 69 d3 97 68 d9   c..^4......i..h.
+    0010 - 9f 58 75 30 98 bc db 7c-5e 81 29 50 42 3d fc 9c   .Xu0...|^.)PB=..
+    0020 - 79 d8 2a ef 77 ff f0 9c-dc 54 9a 48 f3 f3 01 08   y.*.w....T.H....
+    0030 - 2c 3d 76 f6 d4 cd b4 8f-28 96 94 49 5a a1 6d 8b   ,=v.....(..IZ.m.
+    0040 - 94 7c 05 9a c4 51 f1 ba-39 81 98 57 ce e8 37 00   .|...Q..9..W..7.
+    0050 - f1 00 04 8b 4e a2 c7 f7-ae a5 e1 f1 78 bc 92 5b   ....N.......x..[
+    0060 - b3 f7 f3 e7 a7 2f 50 02-7b 0b 89 9b 12 22 d5 d3   ...../P.{...."..
+    0070 - 38 00 af 8a 5b fc 5b 32-17 5e 33 d5 87 3d 98 de   8...[.[2.^3..=..
+    0080 - bc 00 27 d1 8e 3f b7 71-ac 82 d6 f3 bb e7 5c 15   ..'..?.q......\.
+    0090 - 30 7f 09 f0 e8 95 08 b6-52 28 21 97 bb 2b 09 12   0.......R(!..+..
+    00a0 - 7b 24 9f db b6 f9 88 d2-1a 92 36 65 72 2e 22 0c   {$........6er.".
+    00b0 - 92 28 9a b5 f9 21 52 1d-3b 38 f3 3c 54 ff 41 7b   .(...!R.;8.<T.A{
+    00c0 - e8 a8 33 a0 90 cd f0 4d-52 a0 a5 f1 4e f7 05 b5   ..3....MR...N...
+    00d0 - 8d 0e b6 2e 32 5b e9 f0-b2 c3 71 8c 45 eb 82 d4   ....2[....q.E...
+    00e0 - a6 52 2e 76 2f cb 5d 86-2c 0e 07 fe 3b a5 8c 67   .R.v/.].,...;..g
+    00f0 - b5 6d 95 15 3b 2a d5 75-19 97 ad c3 47 f7 70 67   .m..;*.u....G.pg
+
+    Start Time: 1789499787
+    Timeout   : 7200 (sec)
+    Verify return code: 0 (ok)
+    Extended master secret: no
+    Max Early Data: 0
+---
+read R BLOCK
+---
+Post-Handshake New Session Ticket arrived:
+SSL-Session:
+    Protocol  : TLSv1.3
+    Cipher    : TLS_AES_256_GCM_SHA384
+    Session-ID: C7A85D0DCB2DE08AA4FBC9F1F4DE5B4D5A457A1290FE5DDF3F612D188A0C1101
+    Session-ID-ctx: 
+    Resumption PSK: EA4FA05534C17BE8B71D2893A16716A18BF74F6504988B010F80A8F34534D464A0727F626765CAC86B36ADD608FFABAF
+    PSK identity: None
+    PSK identity hint: None
+    SRP username: None
+    TLS session ticket lifetime hint: 300 (seconds)
+    TLS session ticket:
+    0000 - 63 91 a9 5e 34 15 80 fa-b6 bf df 69 d3 97 68 d9   c..^4......i..h.
+    0010 - b5 41 57 34 61 88 98 1e-2d 13 b6 98 d6 2a 03 cd   .AW4a...-....*..
+    0020 - 58 2b 18 1c dc 49 62 2b-39 0c 00 c2 4a d2 8a 5b   X+...Ib+9...J..[
+    0030 - b9 fc 76 c3 a6 00 39 d1-e0 9f 0a 97 97 c6 b7 de   ..v...9.........
+    0040 - 98 0c 60 bc ac f0 d7 1a-10 09 d1 e0 36 58 35 9a   ..`.........6X5.
+    0050 - 3a 92 1a 97 40 9f 36 28-80 4e 29 0f 97 3a af 5e   :...@.6(.N)..:.^
+    0060 - 41 69 ff 0e d9 13 0e b8-e4 88 e9 94 bc 1b 73 c1   Ai............s.
+    0070 - 08 38 f3 60 34 48 69 38-f9 d0 c9 26 85 43 fc 3b   .8.`4Hi8...&.C.;
+    0080 - 7d 9b 8e ca d7 82 f2 51-94 44 ab 94 91 de 4e a5   }......Q.D....N.
+    0090 - 72 64 c6 3b 25 3b b0 eb-be e2 8b 8e 9d b9 20 e4   rd.;%;........ .
+    00a0 - da 9a db 37 2f 73 16 85-9d f7 4f 3b 15 7f c1 b3   ...7/s....O;....
+    00b0 - c6 d2 7d 7c ad 33 42 1d-e7 cb f4 9f 4b 82 59 56   ..}|.3B.....K.YV
+    00c0 - 76 e3 64 b1 dc 6e e3 50-e9 83 bc 21 24 de 1f 17   v.d..n.P...!$...
+    00d0 - 67 27 0e 43 28 b2 0f 58-26 38 61 28 4b a8 df 52   g'.C(..X&8a(K..R
+    00e0 - d6 ba 7f ef 1e 35 4e af-61 c0 c7 f2 01 66 0b b1   .....5N.a....f..
+    00f0 - ea d5 c6 8d 2e 15 47 5e-17 ca 5b 69 99 d4 df 87   ......G^..[i....
+
+    Start Time: 1789499787
+    Timeout   : 7200 (sec)
+    Verify return code: 0 (ok)
+    Extended master secret: no
+    Max Early Data: 0
+---
+read R BLOCK
+
+
+Análise das Evidências Extraídas
+Endereço IP de Destino:
+Connecting to 146.193.41.5
+Confirma a ligação direta ao IP do servidor onde a réplica está alojada.
+Identidade do Certificado (Subject):
+CN=*.dpss.inesc-id.pt
+O servidor utiliza um certificado Wildcard para o subdomínio *.dpss.inesc-id.pt. Isto significa que o servidor possui um certificado válido para qualquer host sob esta zona.
+Autoridade Emissora (Issuer):
+i:C=US, O=Let's Encrypt, CN=YR2
+Emitido pela Let's Encrypt, uma Autoridade Certificadora pública e gratuita. O atacante/administrador utilizou um emissor legítimo para evitar avisos de segurança ("Site Não Seguro") nos navegadores das vítimas.
+Janela de Validade (Validity):
+NotBefore: Aug 30 21:45:13 2026 GMT
+NotAfter: Nov 28 21:45:12 2026 GMT
+O certificado foi emitido a 30 de Agosto de 2026, definindo a janela temporal aproximada em que esta infraestrutura foi configurada ou renovada.
+Nomes Alternativos de Sujeito (SAN - Subject Alternative Name):
+DNS:*.dpss.inesc-id.pt, DNS:*.gsd.inesc-id.pt, DNS:dpss.inesc-id.pt, DNS:gsd.inesc-id.pt
+Revela que o mesmo certificado cobre também o domínio/grupo gsd.inesc-id.pt (Group on Software Systems).
+Conclusão para o Relatório Forense
+A página phishing não usa um certificado autoassinado ou inválido. O servidor apresenta um certificado HTTPS perfeitamente válido e fidedigno emitido pela Let's Encrypt.
+Isto explica por que razão os utilizadores não recebem alertas de certificado no navegador ao aceder ao portal clonado, aumentando significativamente a taxa de sucesso da engenharia social.
