@@ -1,0 +1,114 @@
+commit 95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e
+Author: Johny Musk <sussyjohnnyhacker@gmail.com>
+Date:   Tue Aug 25 15:38:27 2026 +0100
+
+    phone backup
+
+Music/dj_cara_after_hours.wav
+Pictures/Memes/IMG_3041.webp
+Pictures/Memes/look_what_they_need_to_mimic_a_fraction_of_our_power.png
+Pictures/Memes/mr_incredible_becoming_uncanny.png
+Pictures/Memes/polish_cow.webp
+Pictures/gta_v_iceberg_unexplained.jpg
+Videos/Attack on Titan - S01E01/Nyaa.si.url
+Videos/Attack on Titan - S01E01/Subs/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].en.srt
+Videos/Attack on Titan - S01E01/Torrent Downloaded from Nyaa.si.txt
+Videos/Attack on Titan - S01E01/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].mkv.part01
+Videos/Attack on Titan - S01E01/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].mkv.part02
+Videos/Attack on Titan - S01E01/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].mkv.part03
+Videos/Attack on Titan - S01E01/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].mkv.part04
+Videos/Attack on Titan - S01E01/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].mkv.parts.json
+Videos/Clips/v12044gd0000da154d7og65pnr1h4vkg.mov
+Videos/Clips/v17025gh0000cpq4ngvog65nvrftf2k0.mov
+Videos/Clips/v26044gc0000d5qfr37og65kogp4gp0g.mov
+Videos/Grand Theft Auto VI Trailer 1.mp4
+
+commit 43e5350732a3120e28c457e577ce9be73a23e0ec
+Author: Johny Musk <sussyjohnnyhacker@gmail.com>
+Date:   Tue Aug 25 15:10:24 2026 +0100
+
+    telemetry files
+
+Documents/ESP32_ADXL345_3Axis_Telemetry.xlsx
+
+commit 23a5ca71aae2b244f94949c5ca94e515c6adf3b9
+Author: Johny Musk <sussyjohnnyhacker@gmail.com>
+Date:   Tue Aug 25 14:52:11 2026 +0100
+
+    sync downloads
+
+Downloads/blank
+Downloads/myzip.zip
+Downloads/subtitles.srt
+Downloads/v15044gf0000cr8aou7og65l30trb4sg.mov
+Downloads/v24044gl0000d8vt8ovog65qn9o4aeh0.mov
+Downloads/v26044gc0000d9pl88fog65rs4ceqgcg.mov
+
+commit 757af0279c0941154265e556d06d3eb6449a51a6
+Author: Johny Musk <sussyjohnnyhacker@gmail.com>
+Date:   Tue Aug 18 17:05:00 2026 +0100
+
+    production config
+
+.gitlab-ci.yml
+.well-known/acme-challenge/9xQ3nM7kV2pR5sT8wY4zA6bC1dF0gHjL
+public/robots.txt
+
+commit 4c29a3033afff6fdbf89b46f80009520343f1251
+Author: Johny Musk <sussyjohnnyhacker@gmail.com>
+Date:   Tue Aug 18 16:40:00 2026 +0100
+
+    and desert you
+
+server.js
+
+commit 6659b4a7c57adffbf3f68cfdfcc918b2e4eb6f74
+Author: Johny Musk <sussyjohnnyhacker@gmail.com>
+Date:   Tue Aug 18 12:15:00 2026 +0100
+
+    never gonna run around
+
+.gitignore
+package-lock.json
+package.json
+
+commit 8c05e726b9d8f806c7e96c87457196b0a8b3ae1b
+Author: Johny Musk <sussyjohnnyhacker@gmail.com>
+Date:   Tue Aug 18 09:20:00 2026 +0100
+
+    never gonna let you down
+
+public/assets/cas.min.js
+public/fonts/entypo/entypo.ttf
+public/fonts/entypo/entypo.woff
+public/images/icones/ccidadao.png
+public/images/icones/ccidadao.svg
+public/images/icones/eid_europeu.png
+public/images/icones/eid_europeu.svg
+
+commit cfc29f0f6c0438ef21b1cb8c7bcc4c5308922cd8
+Author: Johny Musk <sussyjohnnyhacker@gmail.com>
+Date:   Mon Aug 17 18:00:00 2026 +0100
+
+    never gonna give you up
+
+public/assets/cas.min.css
+public/assets/fonts.css
+public/index.html
+
+commit ca08197b1bbdd517fe9267a57c40ebe38019cc53
+Author: Johny Musk <sussyjohnnyhacker@gmail.com>
+Date:   Sun Jun 7 00:42:00 2026 +0100
+
+    random stuff
+
+notes/todo.txt
+
+commit ac99025716829695a5804bff49efb3cf2e93bfe3
+Author: Johny Musk <sussyjohnnyhacker@gmail.com>
+Date:   Tue May 12 21:17:00 2026 +0100
+
+    initial setup
+
+.gitattributes
+README.md
