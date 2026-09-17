@@ -350,6 +350,78 @@ Session completed.
 Não encontrei nenhuma password
 
 
+DESCOBRI A PASSWORD COM O SCRIPT join_subtitles.py
+┌──(joao㉿kali)-[~/CSF/csf2627-lab1]
+└─$ python3 join_subtitles.py
+Sucesso! Geradas 1190 hipóteses com linhas unidas em results/joined_blocks_wordlist.txt
+                                                                                           
+┌──(joao㉿kali)-[~/CSF/csf2627-lab1]
+└─$ john --wordlist=results/joined_blocks_wordlist.txt results/myzip.hash
+Using default input encoding: UTF-8
+Loaded 1 password hash (PKZIP [32/64])
+Will run 4 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+Ishouldbebackinaboutaweekorso (myzip.zip/amelia.pdf)     
+1g 0:00:00:00 DONE (2026-09-17 11:17) 33.33g/s 39600p/s 39600c/s 39600C/s 'Cause otherwise this nightmare's never gonna end!..♪
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed. 
+                                                                                           
+┌──(joao㉿kali)-[~/CSF/csf2627-lab1]
+└─$ 
+
+
+
+──(joao㉿kali)-[~/CSF/csf2627-lab1]
+└─$ unzip -P "Ishouldbebackinaboutaweekorso" artifacts/downloads/myzip.zip -d ~/CSF/csf2627-lab1/results/extracted_zip/ 
+Archive:  artifacts/downloads/myzip.zip
+  inflating: /home/joao/CSF/csf2627-lab1/results/extracted_zip/amelia.pdf  
+
+
+
+DESCOBRI MAIS UM ARTEFACTO/SEGREDO : amelia.pdf
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -368,3 +440,145 @@ cd: ficheiro ou pasta inexistente: artifacts/fenix-var-git
 Puxei todos os documentos associados a todos os commits
 
 find ../fenix-var-git-full-history -type f -exec sha256sum {} \; > ../../results/full-history-hashes.txt
+
+
+NÃO ESTOU A DESCOBRIR A PASSWORD DO MYZIP.ZIP, VOU PARA AS IMAGENS (O MIGUEL VAI VER O CREDENTIALS.TXT QUE PODE TER A PASSWORD)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Pasta Pictures
+
+┌──(joao㉿kali)-[~/…/artifacts/fenix-var-git-full-history/95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e/Pictures]
+└─$ # 1. Garantir que a pasta results existe na raiz do projeto
+mkdir -p ~/CSF/csf2627-lab1/results
+
+# 2. Correr o comando redirecionando para o caminho absoluto
+find . -type f -exec sh -c '
+  for f; do
+    echo "== $f =="
+    file "$f"
+    stat -c "%s bytes" "$f"
+  done
+' sh {} + | tee ~/CSF/csf2627-lab1/results/phonebackup-triage.txt
+
+
+Ficheiros WebP suspeitos: Os ficheiros ./Memes/IMG_3041.webp e ./Memes/polish_cow.webp têm um tamanho muito reduzido (cerca de 130 bytes) e são classificados pelo comando file como ASCII text em vez de imagens reais. Isto indica que a extensão .webp pode estar a mascarar ficheiros de texto simples (que podem conter pistas, hashes ou texto oculto).
+
+O hexdump mostra que o ficheiro IMG_3041.webp não é uma imagem real, mas sim um ponteiro do Git LFS (Large File Storage).
+O que significa isto?
+Ponteiro LFS: Repositórios Git que lidam com ficheiros pesados (como imagens grandes ou binários) usam frequentemente o Git LFS. Em vez de guardarem o binário da imagem no histórico normal do Git, guardam apenas um pequeno ficheiro de texto a indicar onde descarregar o ficheiro real (neste caso, através do URL do GitHub LFS com um identificador único sha256:29178488...).
+O tamanho reduzido (131 bytes): Explica perfeitamente porque é que o comando file o classificava como "ASCII text".
+
+
+
+
+
+┌──(joao㉿kali)-[~/CSF/csf2627-lab1]
+└─$ cd artifacts/fenix-var-git-full-history 
+                                                                                    
+┌──(joao㉿kali)-[~/CSF/csf2627-lab1/artifacts/fenix-var-git-full-history]
+└─$ git lfs pull                           
+                                                                                    
+┌──(joao㉿kali)-[~/CSF/csf2627-lab1/artifacts/fenix-var-git-full-history]
+└─$ git lfs version || sudo apt install -y git-lfs
+git-lfs/3.8.0 (GitHub; linux arm64; go 1.26.7)
+                                                                                    
+┌──(joao㉿kali)-[~/CSF/csf2627-lab1/artifacts/fenix-var-git-full-history]
+└─$ cd ~/CSF/csf2627-lab1/artifacts/fenix-var-git
+git lfs install
+git lfs pull
+Updated Git hooks.
+Git LFS initialized.
+The authenticity of host 'gitlab.com (172.65.251.78)' can't be established.         
+ED25519 key fingerprint is: SHA256:eUXGGm1YGsMAS7vkcx6JOJdOGHPem5gQp4taiCfCLB8
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? y
+Please type 'yes', 'no' or the fingerprint: yes
+batch request: git@gitlab.com: Permission denied (publickey).: exit status 255      
+Failed to fetch some objects from 'https://gitlab.com/MuskyBoi/peixinho.git/info/lfs'
+                                                                                    
+┌──(joao㉿kali)-[~/CSF/csf2627-lab1/artifacts/fenix-var-git]
+└─$ 
+
+
+
+
+
+
+┌──(joao㉿kali)-[~/…/csf2627-lab1/artifacts/fenix-var-git-full-history/95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e]
+└─$ OID="291784886fe3eb37d7d48f2a60564a30d7f26c91651a5a45a7c42cf26067f508"
+PREFIX1=${OID:0:2}
+PREFIX2=${OID:2:2}
+
+curl -o ~/CSF/csf2627-lab1/results/IMG_3041.webp -k \
+  "https://fenix.dpss.inesc-id.pt/.git/lfs/objects/${PREFIX1}/${PREFIX2}/${OID}"
+
+file ~/CSF/csf2627-lab1/results/IMG_3041.webp
+sha256sum ~/CSF/csf2627-lab1/results/IMG_3041.webp   # deve bater certo com o OID!
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+100 763.1k 100 763.1k   0      0 141.7k      0   00:05   00:05              0
+/home/joao/CSF/csf2627-lab1/results/IMG_3041.webp: RIFF (little-endian) data, Web/P image, ICC profile, 1170x929 
+291784886fe3eb37d7d48f2a60564a30d7f26c91651a5a45a7c42cf26067f508  /home/joao/CSF/csf2627-lab1/results/IMG_3041.webp
+
+
+ESTA IMAGEM É APENAS UM MEME
+
+
+┌──(joao㉿kali)-[~/CSF/csf2627-lab1/artifacts/fenix-var-git-full-history]
+└─$ cd ~/CSF/csf2627-lab1/artifacts/fenix-var-git-full-history
+
+# procura ficheiros pequenos com a assinatura de ponteiro LFS
+grep -rl "git-lfs.github.com/spec" . 2>/dev/null
+./95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e/Music/dj_cara_after_hours.wav
+./95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e/Pictures/Memes/IMG_3041.webp
+./95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e/Pictures/Memes/polish_cow.webp
+./95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e/Videos/Attack on Titan - S01E01/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].mkv.part02
+./95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e/Videos/Attack on Titan - S01E01/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].mkv.part03
+./95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e/Videos/Attack on Titan - S01E01/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].mkv.part04
+./95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e/Videos/Attack on Titan - S01E01/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].mkv.part01
+./3483ea7e02dbe048f0c48fd9a1fc36225f8c7229/Music/dj_cara_after_hours.wav
+./3483ea7e02dbe048f0c48fd9a1fc36225f8c7229/Pictures/Memes/IMG_3041.webp
+./3483ea7e02dbe048f0c48fd9a1fc36225f8c7229/Pictures/Memes/polish_cow.webp
+./3483ea7e02dbe048f0c48fd9a1fc36225f8c7229/Videos/Attack on Titan - S01E01/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].mkv.part02
+./3483ea7e02dbe048f0c48fd9a1fc36225f8c7229/Videos/Attack on Titan - S01E01/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].mkv.part03
+./3483ea7e02dbe048f0c48fd9a1fc36225f8c7229/Videos/Attack on Titan - S01E01/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].mkv.part04
+./3483ea7e02dbe048f0c48fd9a1fc36225f8c7229/Videos/Attack on Titan - S01E01/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].mkv.part01
+./7fc49691545e080fe4c837d30b7ffa845b779581/Music/dj_cara_after_hours.wav
+./7fc49691545e080fe4c837d30b7ffa845b779581/Pictures/Memes/IMG_3041.webp
+./7fc49691545e080fe4c837d30b7ffa845b779581/Pictures/Memes/polish_cow.webp
+./7fc49691545e080fe4c837d30b7ffa845b779581/Videos/Attack on Titan - S01E01/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].mkv.part02
+./7fc49691545e080fe4c837d30b7ffa845b779581/Videos/Attack on Titan - S01E01/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].mkv.part03
+./7fc49691545e080fe4c837d30b7ffa845b779581/Videos/Attack on Titan - S01E01/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].mkv.part04
+./7fc49691545e080fe4c837d30b7ffa845b779581/Videos/Attack on Titan - S01E01/[Erai-raws] Shingeki no Kyojin - 01 [720p][Dual Audio].mkv.part01
+
+
+
+
+
+
+
+
+
+
+┌──(joao㉿kali)-[~/CSF/csf2627-lab1/results/lfs-objects]
+└─$ mv 2b61eecffc5261dcc05d833c64454b42d33f445d3df09095988d0c2dbbc8753d dj_cara_after_hours.wav
+mv 291784886fe3eb37d7d48f2a60564a30d7f26c91651a5a45a7c42cf26067f508 IMG_3041.webp
+mv 857f75db04db84340d4efa53061ca26fc7c7e6f65f80899c57f8d65b4c9d5678 polish_cow.webp
+mv dc91370f60fad62f8ed25c4531df84b6c84d3595e250cd200ba6645d8e79ea58 mkv.part01
+mv 3d076262df72c96c069b64b4407a3a58b743c93453c2f9f0bcb5367088f3b424 mkv.part02
+mv 8f1771479ada2acf649b05c3b4b62e1a157a07e6b183a2abe379d152e3cb531e mkv.part03
+mv 71880aaf10eb72c986c6a5255b7273efc6e00405fb48da33f17ef54e249386c1 mkv.part04
+
