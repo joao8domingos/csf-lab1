@@ -279,3 +279,92 @@ Uma imagem PNG válida tem sempre de começar obrigatoriamente com a assinatura 
 A maneira mais fácil e limpa de consertar o cabeçalho no Kali Linux é substituir os primeiros 4 bytes (%PDF) pelos bytes corretos do PNG (\x89PNG) mantendo todo o resto do ficheiro intacto.                                                                            
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# myzip.zip
+
+┌──(joao㉿kali)-[~/CSF/csf2627-lab1/artifacts/downloads]
+└─$ file myzip.zip    
+myzip.zip: Zip archive data, made by v3.0 UNIX, extract using at least v2.0, last modified Feb 18 2026 15:23:48, uncompressed size 824733, method=deflate
+                                                                                    
+┌──(joao㉿kali)-[~/CSF/csf2627-lab1/artifacts/downloads]
+└─$ unzip -l myzip.zip                      
+Archive:  myzip.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+   824733  2026-02-18 15:23   amelia.pdf
+---------                     -------
+   824733                     1 file
+
+
+
+
+
+┌──(joao㉿kali)-[~/CSF/csf2627-lab1/artifacts/downloads]
+└─$ zip2john myzip.zip > ../../results/myzip.hash  
+ver 2.0 efh 5455 efh 7875 myzip.zip/amelia.pdf PKZIP Encr: TS_chk, cmplen=816296, decmplen=824733, crc=A6151481 ts=7AF8 cs=7af8 type=8
+
+
+The John installation includes an auxiliary tool named zip2johnfor this purpose. The following
+command converts the relevant ZIP data and redirects the result to results/protected.hash: results/myzip.hash
+
+
+
+┌──(joao㉿kali)-[~/CSF/csf2627-lab1/artifacts/downloads]
+└─$ cut -c 1-200 ../../results/myzip.hash 
+myzip.zip/amelia.pdf:$pkzip$1*1*2*0*c74a8*c959d*a6151481*0*44*8*c74a8*7af8*ebd5657f76bd65db148c1030b8f973b1f833333137df9402f325fc7407ad0d2310fff8b7a1ff9ccfb14aef69787cd335d4bc07c0bfe62da4dc1c9f46ccc5c
+                                                                                    
+┌──(joao㉿kali)-[~/CSF/csf2627-lab1/artifacts/downloads]
+└─$ tail -c 200 ../../results/myzip.hash 
+a53f0928ad2e5b6cdfbcf103eef2f99a39104eaf4985f2cf9ebf0a892b6eef9e1b66765ae972ec693295851e305e7bb6f68e132ba4c277b863a0d679519eb5bcdf93e63c1e6def3c11c1982981a3f8*$/pkzip$:amelia.pdf:myzip.zip::myzip.zip
+
+
+──(joao㉿kali)-[~/CSF/csf2627-lab1/artifacts/downloads]
+└─$ john --wordlist=/usr/share/wordlists/rockyou.txt ../../results/myzip.hash 
+Using default input encoding: UTF-8
+Loaded 1 password hash (PKZIP [32/64])
+Will run 4 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+0g 0:00:00:01 DONE (2026-09-17 08:36) 0g/s 13039Kp/s 13039Kc/s 13039KC/s "2parrow"..*7¡Vamos!
+Session completed. 
+                                                                                    
+┌──(joao㉿kali)-[~/CSF/csf2627-lab1/artifacts/downloads]
+└─$ john --show ../../results/myzip.hash
+0 password hashes cracked, 1 left
+
+
+Não encontrei nenhuma password
+
+
+
+
+
+┌──(joao㉿kali)-[~/CSF/csf2627-lab1/artifacts/fenix-var-git]
+└─$ cd artifacts/fenix-var-git
+mkdir -p ../fenix-var-git-full-history
+
+for commit in $(git rev-list --all); do
+  mkdir -p "../fenix-var-git-full-history/$commit"
+  git --work-tree="../fenix-var-git-full-history/$commit" checkout "$commit" -- . 2>/dev/null
+done
+cd: ficheiro ou pasta inexistente: artifacts/fenix-var-git
+
+
+
+Puxei todos os documentos associados a todos os commits
+
+find ../fenix-var-git-full-history -type f -exec sha256sum {} \; > ../../results/full-history-hashes.txt
