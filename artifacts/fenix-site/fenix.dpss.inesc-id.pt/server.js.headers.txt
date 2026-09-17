@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Server: nginx/1.31.4
+Date: Wed, 16 Sep 2026 19:00:25 GMT
+Content-Type: text/javascript; charset=utf-8
+Content-Length: 2287
+Connection: keep-alive
+X-Powered-By: PHP/7.4.3
+Accept-Ranges: bytes
+Cache-Control: public, max-age=0
+Last-Modified: Wed, 09 Sep 2026 19:02:24 GMT
+ETag: W/"8ef-1a0878cc200"
+

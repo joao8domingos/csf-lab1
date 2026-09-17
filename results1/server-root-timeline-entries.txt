@@ -1,0 +1,17 @@
+# Timeline entries — server-root artifacts
+# Format: UTC timestamp | event | source of timestamp | notes/limitations
+
+2026-09-09T19:02:24Z | server.js last modified on server | HTTP Last-Modified header (SRV-01a) | Server-reported; 18 days AFTER reported phishing campaign (19-22 Aug 2026)
+2026-09-09T23:11:15Z | README.md last modified on server | HTTP Last-Modified header (SRV-02a) | Server-reported; 4h09m after server.js
+2026-09-16T19:00:25Z | server.js collected by investigation team | curl, local system clock (UTC) | Acquisition event
+2026-09-16T19:00:30Z | README.md collected by investigation team | curl, local system clock (UTC) | Acquisition event
+2026-09-16T19:00:36Z | credentials.txt access attempt -> HTTP 403 | curl, local system clock (UTC) | Confirms existence + protection
+
+# TEMPORAL ANOMALY (to state as hypothesis, not fact):
+# Campaign reported 19-22 Aug 2026, but current server.js dates from 09 Sep 2026 and the
+# TLS certificate NotBefore is 30 Aug 2026. Possible explanations, none confirmed:
+#  (a) infrastructure was redeployed/updated after the campaign;
+#  (b) Let's Encrypt certs are ~90-day and auto-renewed, so 30 Aug may be a RENEWAL
+#      rather than first issuance — original cert date unknown from available evidence;
+#  (c) an earlier version of the code was live during August.
+# ACTION: request deployment logs and certificate history from INESC-ID.

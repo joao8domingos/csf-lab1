@@ -1,0 +1,57 @@
+=== [SRV-01] server.js ===
+Access: 2026-09-16 20:00:25.790001831 +0100
+Modify: 2026-09-16 20:00:25.793895289 +0100
+Change: 2026-09-16 20:00:25.793895289 +0100
+Birth:  2026-09-16 20:00:25.790001831 +0100
+Size:   2287 bytes
+server.js: JavaScript source, ASCII text, with CRLF, LF line terminators
+671c060318fd049eda4b05c74c7097c4eef0e315ed38163d199f7b780e1ad33c  server.js
+ccd51e52da223953748a46c2249e4e1ded34f97c8585ec208bb42cd5260965587fc615e0a93d0fbbb8b321e473af01d82267f013acf444bb9b3c5bc4098e84eb  server.js
+---
+=== [SRV-02] README.md ===
+Access: 2026-09-16 20:00:30.866001833 +0100
+Modify: 2026-09-16 20:00:30.869023833 +0100
+Change: 2026-09-16 20:00:30.869023833 +0100
+Birth:  2026-09-16 20:00:30.866001833 +0100
+Size:   46 bytes
+README.md: ASCII text, with CRLF line terminators
+bfffd2f4f907a282c45b05b5e5c78de5fa8fb7538283c32ab3bb7d5347aa9c8a  README.md
+4a5056e4a27e89bd55a24b264de08e713f167ae2135c2379d99084be758e5fa3824445470d43f6cde000515d5bceecf2037f419332e1b4ef06f24723289b58a4  README.md
+---
+=== [SRV-03] credentials-txt_HTTP-403-response.html ===
+Access: 2026-09-16 20:00:35.954001836 +0100
+Modify: 2026-09-16 20:00:35.950702919 +0100
+Change: 2026-09-16 20:00:35.950702919 +0100
+Birth:  2026-09-16 20:00:35.946001836 +0100
+Size:   9 bytes
+credentials-txt_HTTP-403-response.html: ASCII text, with no line terminators
+78342a0905a72ce44da083dcb5d23b8ea0c16992ba2a82eece97e033d76ba3d3  credentials-txt_HTTP-403-response.html
+54b2b4596cd1769e46a12a0ca6ede70468985cf8771c2b11e75b3f52567a64418bc24c067d96d52037e0e135e7a7ff828ad0241d55b827506e1c67de1caee8bc  credentials-txt_HTTP-403-response.html
+---
+=== [SRV-01a] server.js.headers.txt ===
+Access: 2026-09-16 20:00:35.950702919 +0100
+Modify: 2026-09-16 20:00:25.790001831 +0100
+Change: 2026-09-16 20:00:25.790001831 +0100
+Birth:  2026-09-16 20:00:20.718001828 +0100
+Size:   324 bytes
+server.js.headers.txt: ASCII text, with CRLF line terminators
+629195e88d8a29c34f111b711f8b76e5d13e783510d65f43065d46c13580f5a3  server.js.headers.txt
+---
+=== [SRV-02a] README.md.headers.txt ===
+Access: 2026-09-16 20:00:35.950702919 +0100
+Modify: 2026-09-16 20:00:30.862001833 +0100
+Change: 2026-09-16 20:00:30.862001833 +0100
+Birth:  2026-09-16 20:00:25.802001831 +0100
+Size:   319 bytes
+README.md.headers.txt: ASCII text, with CRLF line terminators
+daf78f0379f14bb8bbb0241b0af51862d6f4379eedea084441bbc1b713e796b5  README.md.headers.txt
+---
+=== [SRV-03a] credentials-txt_HTTP-403-response.headers.txt ===
+Access: 2026-09-16 20:00:35.954001836 +0100
+Modify: 2026-09-16 20:00:35.946001836 +0100
+Change: 2026-09-16 20:00:35.946001836 +0100
+Birth:  2026-09-16 20:00:30.874001833 +0100
+Size:   234 bytes
+credentials-txt_HTTP-403-response.headers.txt: ASCII text, with CRLF line terminators
+ff088c4e690c0255369725d25e20e173dfc23b00d136063098181d4c8613bb45  credentials-txt_HTTP-403-response.headers.txt
+---

