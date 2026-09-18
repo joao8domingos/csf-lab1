@@ -1,0 +1,18 @@
+=== magic bytes (first 64) ===
+00000000: 0000 0100 0100 0000 0000 0000 2000 3608  ............ .6.
+00000010: 0700 64b7 0100 3c21 2d2d 0a25 5044 462d  ..d...<!--.%PDF-
+00000020: 312e 350a 0a31 2030 206f 626a 0a3c 3c2f  1.5..1 0 obj.<</
+00000030: 4c65 6e67 7468 2039 3335 3738 3535 3e3e  Length 9357855>>
+=== binwalk ===
+=== signature offsets ===
+total size: 9443926 bytes
+%PDF- (PDF start): 3 hit(s) -> offsets [27, 107112, 9357945]
+%%EOF (PDF end): 1 hit(s) -> offsets [9443910]
+PK\x03\x04 (zip): none
+ftyp (MP4): 1 hit(s) -> offsets [260]
+\x89PNG: 1 hit(s) -> offsets [112484]
+JPEG \xff\xd8\xff: none
+GIF8: none
+ICO \x00\x00\x01\x00 (at 0): 5801 hit(s) -> offsets [0, 334, 347, 363, 441, 467, 483, 533, 543, 700] ...
+Rar!: none
+7z \x37\x7A: none

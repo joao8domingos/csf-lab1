@@ -96,4 +96,16 @@ anexados após EOF. Os tamanhos em disco (2287 / 46 / 9 bytes) coincidem com o
 Content-Length HTTP de cada resposta.
 INTERPRETAÇÃO: não há dados ocultos, overlays nem conteúdo anexado nestes três ficheiros.
 NOTA METODOLÓGICA: um resultado negativo é um resultado válido e fica documentado como tal.
+
+## F-12 — Anomalia de terminador de linha isola a linha do /var/log/
+OBSERVAÇÃO: server.js tem 75 linhas terminadas em CRLF e exatamente 1 terminada só em LF —
+a linha 49: `if (/^\/var\/log\/credentials\.log(\/|$)/.test(requestPath)) {`.
+INTERPRETAÇÃO: um único terminador divergente indica que esta linha foi inserida ou editada
+separadamente do resto do ficheiro (editor/origem diferente). Não é uma linha arbitrária: é a
+que bloqueia o segundo repositório de credenciais /var/log/credentials.log (ver F-08).
+HIPÓTESE (inferencial): o mecanismo associado a /var/log/ foi acrescentado num momento
+distinto da escrita inicial do server.js. Corrobora F-08. NÃO confirma quando nem porquê.
+CONFIANÇA: média — a observação do terminador é factual; a inferência sobre edição separada
+é plausível mas não única (pode resultar de ferramentas de formatação).
+
 EOF

@@ -1,0 +1,53 @@
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+27            0x1B            PDF document, version: "1.5"
+97104         0x17B50         YAFFS filesystem root entry, big endian, type symlink, v1 root directory
+97337         0x17C39         HTML document header
+107112        0x1A268         PDF document, version: "3.2 in engine logs)</li>"
+112469        0x1B755         HTML document footer
+112484        0x1B764         PNG image, 600 x 527, 8-bit/color RGBA, non-interlaced
+112546        0x1B7A2         Zlib compressed data, default compression
+9357945       0x8ECA79        PDF document, version: "1.5"
+9359393       0x8ED021        Zlib compressed data, best compression
+9361169       0x8ED711        Zlib compressed data, best compression
+9364477       0x8EE3FD        Zlib compressed data, best compression
+9368032       0x8EF1E0        Zlib compressed data, best compression
+9372373       0x8F02D5        Zlib compressed data, best compression
+9376075       0x8F114B        Zlib compressed data, best compression
+9376689       0x8F13B1        Zlib compressed data, best compression
+9377328       0x8F1630        Zlib compressed data, best compression
+9377891       0x8F1863        Zlib compressed data, best compression
+9378266       0x8F19DA        Zlib compressed data, best compression
+9378626       0x8F1B42        Zlib compressed data, best compression
+9379074       0x8F1D02        Zlib compressed data, best compression
+9379394       0x8F1E42        Zlib compressed data, best compression
+9379868       0x8F201C        Zlib compressed data, best compression
+9380196       0x8F2164        Zlib compressed data, best compression
+9380946       0x8F2452        Zlib compressed data, best compression
+9381264       0x8F2590        Zlib compressed data, best compression
+9381669       0x8F2725        Zlib compressed data, best compression
+9387517       0x8F3DFD        Zlib compressed data, best compression
+9387706       0x8F3EBA        Zlib compressed data, best compression
+9392982       0x8F5356        Zlib compressed data, best compression
+9393170       0x8F5412        Zlib compressed data, best compression
+9397567       0x8F653F        Zlib compressed data, best compression
+9397741       0x8F65ED        Zlib compressed data, best compression
+9399212       0x8F6BAC        Zlib compressed data, best compression
+9399343       0x8F6C2F        Zlib compressed data, best compression
+9400860       0x8F721C        Zlib compressed data, best compression
+9400977       0x8F7291        Zlib compressed data, best compression
+9404101       0x8F7EC5        Zlib compressed data, best compression
+9404328       0x8F7FA8        Zlib compressed data, default compression
+9406985       0x8F8A09        Zlib compressed data, default compression
+9409775       0x8F94EF        Zlib compressed data, default compression
+9412182       0x8F9E56        Zlib compressed data, default compression
+9412420       0x8F9F44        Zlib compressed data, default compression
+9418592       0x8FB760        Zlib compressed data, default compression
+9423725       0x8FCB6D        Zlib compressed data, default compression
+9423961       0x8FCC59        Zlib compressed data, default compression
+9432626       0x8FEE32        Zlib compressed data, default compression
+9439805       0x900A3D        Zlib compressed data, default compression
+9439972       0x900AE4        Zlib compressed data, best compression
+9443531       0x9018CB        Zlib compressed data, best compression
+

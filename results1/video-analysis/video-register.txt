@@ -1,0 +1,24 @@
+=== [VID-01] Grand Theft Auto VI Trailer 1.mp4 ===
+Provenance: .git full history, commit 95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e, path Videos/
+Access: 2026-09-17 10:23:32.239883732 +0100
+Modify: 2026-09-17 08:51:44.000000000 +0100
+Change: 2026-09-17 10:22:43.576782000 +0100
+Birth:  2026-09-17 10:22:43.438609000 +0100
+Size:   9443926 bytes
+artifacts/fenix-var-git-full-history/95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e/Videos/Grand Theft Auto VI Trailer 1.mp4: data
+5d3b5f08f35c5d812e0f2c36d58c9c4f2a0b844e2e1f8bd5054a9bc54f8471ca  artifacts/fenix-var-git-full-history/95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e/Videos/Grand Theft Auto VI Trailer 1.mp4
+95cade2bbf3648c423c5855c2fe2b407449fd700d9bea285d57e34dcbb7dad43dfca9947ccf4df4222abce56fd23a96e25354e7063eab2c67177b89fed90bf4b  artifacts/fenix-var-git-full-history/95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e/Videos/Grand Theft Auto VI Trailer 1.mp4
+--- cross-check vs full-history-hashes.txt ---
+=== [VID-01-A] VID-01-A-embedded.pdf ===
+Parent: VID-01 | Method: carve from offset 27 (start of %PDF-1.5) to EOF
+Registered: 2026-09-17T10:00:12+00:00
+Size: 9443899 bytes
+artifacts/video-extracted/VID-01-A-embedded.pdf: PDF document, version 1.5
+9b57779104798e600a0ae083d3de54c9db6f97982931028910bf8a40785225f3  artifacts/video-extracted/VID-01-A-embedded.pdf
+a3b581bff8a40279a8b4364803786dd2b37a661176068660118bfe86a12cc1ec2b2e38f14c851116fe6b73f4a4b875c0e053f6540eadcea141d3f6bfea1838bb  artifacts/video-extracted/VID-01-A-embedded.pdf
+=== [VID-01-B] VID-01-B-hidden.html (parent VID-01, carve 97337..112469) ===
+artifacts/video-extracted/VID-01-B-hidden.html: HTML document, Unicode text, UTF-8 text, with very long lines (1891), with CRLF line terminators
+c5ad2c0ef33cf1dcf4dc8dcc530013e02a101a1eb5aa40d85bbfd390fcf0b5c1  artifacts/video-extracted/VID-01-B-hidden.html
+=== [VID-01-C] VID-01-C-hidden.png (parent VID-01, carve from 112484 to IEND) ===
+artifacts/video-extracted/VID-01-C-hidden.png: PNG image data, 600 x 527, 8-bit/color RGBA, non-interlaced
+27427762ad21c233e5406dba38b62544075f46f8892ab204c1b6d1aa54e309d6  artifacts/video-extracted/VID-01-C-hidden.png

@@ -1,0 +1,10 @@
+
+Input File     : 'artifacts/audio-working-copy/dj_cara_after_hours.REAL.wav'
+Channels       : 2
+Sample Rate    : 48000
+Precision      : 16-bit
+Duration       : 00:11:12.13 = 32262442 samples ~ 50410.1 CDDA sectors
+File Size      : 129M
+Bit Rate       : 1.54M
+Sample Encoding: 16-bit Signed Integer PCM
+

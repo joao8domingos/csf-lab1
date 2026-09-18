@@ -1,0 +1,9 @@
+total 56
+drwxrwxr-x 2 miguel miguel  4096 set 17 11:00 .
+drwxrwxr-x 4 miguel miguel  4096 set 17 11:00 ..
+-rw-rw-r-- 1 miguel miguel  3417 set 17 11:00 img-000.png
+-rw-rw-r-- 1 miguel miguel  2541 set 17 11:00 img-001.png
+-rw-rw-r-- 1 miguel miguel  8190 set 17 11:00 img-002.png
+-rw-rw-r-- 1 miguel miguel  4779 set 17 11:00 img-003.png
+-rw-rw-r-- 1 miguel miguel 12545 set 17 11:00 img-004.png
+-rw-rw-r-- 1 miguel miguel  6636 set 17 11:00 img-005.png

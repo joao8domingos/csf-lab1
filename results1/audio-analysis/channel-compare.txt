@@ -1,0 +1,3 @@
+=== channel L vs R sha256 ===
+3d33650a626a23ca541dfc6988d03d305ba7f5c0057bf2eaa6bcad48189ba90c  results1/audio-analysis/channels/channel-L.wav
+61bb6e47a4eb62e993e2d76add93414b70b762cb400d9885ea95d0941e6ffc0a  results1/audio-analysis/channels/channel-R.wav

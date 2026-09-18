@@ -1,0 +1,21 @@
+Title:           Independent External Technical Assessment Report - Project AMELIA
+Subject:         Independent external pre-production technical assessment
+Keywords:        AMELIA, independent external assessment, technical assurance, pre-production
+Author:          
+Creator:         
+Producer:        xdvipdfmx (20240305)
+CreationDate:    Thu Apr 30 12:00:00 2026 WEST
+Custom Metadata: no
+Metadata Stream: no
+Tagged:          no
+UserProperties:  no
+Suspects:        no
+Form:            none
+JavaScript:      no
+Pages:           5
+Encrypted:       no
+Page size:       595.28 x 841.89 pts (A4)
+Page rot:        0
+File size:       9443899 bytes
+Optimized:       no
+PDF version:     1.5

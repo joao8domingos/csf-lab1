@@ -1,0 +1,14 @@
+## Deep audio analysis — dj_cara_after_hours.wav (from .git full-history, commit 95f15e90.../Music)
+2026-09-17T10:33:05+00:00
+## AUD-01 is a Git LFS pointer, not the audio itself
+2026-09-17T10:40:15+00:00
+## AUD-01 REAL FILE (resolved from Git LFS by colleague) — deep analysis
+2026-09-17T11:08:46+00:00
+## FASE 2 — spectrograms (full, per-channel) + channel analysis
+2026-09-17T11:13:03+00:00
+## FASE 2b — spectrogram message found in L-R difference (stereo phase steg)
+2026-09-17T12:00:43+00:00
+## FASE 2c — isolate the message band and produce clean readable strips
+2026-09-17T12:05:51+00:00
+## FASE 2d — build L-R difference track for interactive reading in Audacity
+2026-09-17T12:11:08+00:00

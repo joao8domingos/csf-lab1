@@ -1,0 +1,7 @@
+=== LFS integrity verification ===
+expected oid : 2b61eecffc5261dcc05d833c64454b42d33f445d3df09095988d0c2dbbc8753d
+actual   oid : 2b61eecffc5261dcc05d833c64454b42d33f445d3df09095988d0c2dbbc8753d
+expected size: 129049812
+actual   size: 129049812
+OID MATCH ✓
+SIZE MATCH ✓

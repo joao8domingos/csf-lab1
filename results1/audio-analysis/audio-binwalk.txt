@@ -1,0 +1,65 @@
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+0             0x0             RIFF audio data (WAV), PCM, 2 channels, 48000 sample rate
+866975        0xD3A9F         MySQL MISAM compressed data file Version 10
+3025138       0x2E28F2        MySQL ISAM compressed data file Version 7
+4101537       0x3E95A1        mcrypt 2.5 encrypted data, algorithm: "", keysize: 1876 bytes, mode: "N",
+13946138      0xD4CD1A        JBOOT STAG header, image id: 14, timestamp 0x89B2B66, image size: 742655815 bytes, image JBOOT checksum: 0x2CC2, header JBOOT checksum: 0x1330
+18087569      0x113FE91       MySQL MISAM index file Version 11
+18719678      0x11DA3BE       JBOOT STAG header, image id: 10, timestamp 0x10692B3A, image size: 651497207 bytes, image JBOOT checksum: 0x260B, header JBOOT checksum: 0x1F6C
+21800847      0x14CA78F       MySQL MISAM compressed data file Version 10
+24183328      0x1710220       MySQL ISAM compressed data file Version 4
+27492191      0x1A37F5F       JBOOT STAG header, image id: 15, timestamp 0xEF147922, image size: 1847744526 bytes, image JBOOT checksum: 0xA41E, header JBOOT checksum: 0x681F
+28896024      0x1B8EB18       MySQL ISAM compressed data file Version 3
+29221247      0x1BDE17F       MySQL MISAM compressed data file Version 10
+29773203      0x1C64D93       MySQL MISAM compressed data file Version 10
+32044793      0x1E8F6F9       MySQL MISAM compressed data file Version 4
+32657601      0x1F250C1       MySQL MISAM index file Version 10
+33811311      0x203EB6F       JBOOT STAG header, image id: 7, timestamp 0xE90A6F21, image size: 85999881 bytes, image JBOOT checksum: 0x391F, header JBOOT checksum: 0xD12
+33974678      0x2066996       MySQL MISAM index file Version 7
+35362299      0x21B95FB       JBOOT STAG header, image id: 9, timestamp 0x2E086227, image size: 3592254987 bytes, image JBOOT checksum: 0x471D, header JBOOT checksum: 0xA30E
+35874351      0x223662F       MySQL ISAM index file Version 10
+35969819      0x224DB1B       MySQL ISAM index file Version 6
+42110010      0x2828C3A       MySQL MISAM compressed data file Version 7
+45859598      0x2BBC30E       Cisco IOS microcode, for ""
+47420682      0x2D3950A       MySQL MISAM index file Version 3
+47820879      0x2D9B04F       MySQL ISAM compressed data file Version 4
+49589933      0x2F4AEAD       JBOOT STAG header, image id: 12, timestamp 0x5416E306, image size: 3758665470 bytes, image JBOOT checksum: 0x6418, header JBOOT checksum: 0x930F
+50554126      0x303650E       JBOOT STAG header, image id: 7, timestamp 0x1651E6E, image size: 691272399 bytes, image JBOOT checksum: 0x1CBD, header JBOOT checksum: 0x257
+57067591      0x366C847       MySQL MISAM compressed data file Version 8
+59823176      0x390D448       MySQL ISAM compressed data file Version 3
+63269718      0x3C56B56       MySQL MISAM index file Version 8
+63366375      0x3C6E4E7       JBOOT STAG header, image id: 15, timestamp 0x52239A25, image size: 4162092068 bytes, image JBOOT checksum: 0x9316, header JBOOT checksum: 0x4136
+65966142      0x3EE903E       JBOOT STAG header, image id: 6, timestamp 0x13812596, image size: 878447317 bytes, image JBOOT checksum: 0x25DC, header JBOOT checksum: 0x2853
+66381507      0x3F4E6C3       MySQL MISAM compressed data file Version 10
+68966482      0x41C5852       MySQL MISAM index file Version 3
+69328659      0x421DF13       JBOOT STAG header, image id: 3, timestamp 0xF22A23, image size: 657014258 bytes, image JBOOT checksum: 0xD52B, header JBOOT checksum: 0xBBF3
+71254900      0x43F4374       MySQL ISAM compressed data file Version 1
+78083010      0x4A773C2       MySQL ISAM index file Version 7
+78821525      0x4B2B895       MySQL MISAM index file Version 7
+79689199      0x4BFF5EF       MySQL ISAM compressed data file Version 4
+81651502      0x4DDE72E       MySQL MISAM index file Version 10
+83375914      0x4F8372A       MySQL MISAM compressed data file Version 5
+83675354      0x4FCC8DA       MySQL ISAM compressed data file Version 10
+85177780      0x513B5B4       MySQL ISAM compressed data file Version 11
+85639904      0x51AC2E0       MySQL ISAM compressed data file Version 3
+86411121      0x5268771       JBOOT STAG header, image id: 6, timestamp 0x852C7310, image size: 2083530012 bytes, image JBOOT checksum: 0xD016, header JBOOT checksum: 0x3C21
+89981025      0x55D0061       mcrypt 2.2 encrypted data, algorithm: GOST, mode: CBC, keymode: SHA-1 hash
+93252023      0x58EE9B7       MySQL ISAM compressed data file Version 4
+100581679     0x5FEC12F       MySQL MISAM compressed data file Version 4
+101139950     0x60745EE       JBOOT STAG header, image id: 0, timestamp 0x2A600208, image size: 688063294 bytes, image JBOOT checksum: 0x327, header JBOOT checksum: 0x276F
+110367147     0x69411AB       JBOOT STAG header, image id: 5, timestamp 0x9A189010, image size: 2433665292 bytes, image JBOOT checksum: 0x600D, header JBOOT checksum: 0x180D
+110562209     0x6970BA1       JBOOT STAG header, image id: 14, timestamp 0xF221C108, image size: 924831236 bytes, image JBOOT checksum: 0x33FD, header JBOOT checksum: 0x461F
+111635570     0x6A76C72       MySQL ISAM compressed data file Version 5
+112966943     0x6BBBD1F       JBOOT STAG header, image id: 1, timestamp 0xCE234208, image size: 1612825101 bytes, image JBOOT checksum: 0xD17, header JBOOT checksum: 0x911C
+112968291     0x6BBC263       MySQL MISAM compressed data file Version 10
+114067293     0x6CC875D       MySQL ISAM index file Version 3
+114787800     0x6D785D8       MySQL ISAM compressed data file Version 1
+114813494     0x6D7EA36       MySQL ISAM compressed data file Version 1
+115286805     0x6DF2315       MySQL ISAM compressed data file Version 8
+119989921     0x726E6A1       JBOOT STAG header, image id: 3, timestamp 0xCC207512, image size: 2501676053 bytes, image JBOOT checksum: 0x4F17, header JBOOT checksum: 0xA91A
+124514686     0x76BF17E       MySQL MISAM index file Version 3
+128590791     0x7AA23C7       MySQL MISAM index file Version 4
+128886754     0x7AEA7E2       MySQL ISAM index file Version 2
+

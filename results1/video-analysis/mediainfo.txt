@@ -1,0 +1,56 @@
+Quer instalá-lo? (N/s)A ler as listas de pacotes...
+A construir árvore de dependências...
+A ler a informação de estado...
+A resolver dependências: ...
+Os seguintes pacotes foram instalados automaticamente e já não são necessários:
+  bluez-hcidump              libjim0.83         libvidstab1.1
+  firmware-marvell-prestera  libkmlbase1t64     libx265-215
+  libabsl20260107            libkmldom1t64      openssh-client-gssapi
+  libbluray3                 libkmlengine1t64   perl-modules-5.40
+  libconfig++11              libntfs-3g89t64    python3.13
+  libconfig11                libopenjph0.27     python3.13-dev
+  libhdf5-310                libperl5.40        python3.13-minimal
+  libhdf5-hl-310             libpoppler156      python3.13-venv
+  libimath-3-1-29t64         libpython3.13-dev  rpcsvc-proto
+Utilize 'sudo apt autoremove' para os remover.
+
+A instalar:
+  mediainfo
+
+A instalar dependências:
+  libmediainfo0v5  libtinyxml2-11  libzen0t64
+
+Pacotes sugeridos:
+  mediainfo-gui
+
+Sumário:
+  A atualizar: 0, A instalar: 4, A remover: 0, A não atualizar: 146
+  Tamanho da descarga: 3153 kB
+  Espaço necessário: 10,9 MB / 19,6 GB disponível
+
+Continuar? [S/n] Obter:1 http://http.kali.org/kali kali-rolling/main arm64 libtinyxml2-11 arm64 11.0.0+dfsg-1+b3 [29,3 kB]
+Obter:2 http://http.kali.org/kali kali-rolling/main arm64 libzen0t64 arm64 0.4.41-4+b1 [97,2 kB]
+Obter:3 http://http.kali.org/kali kali-rolling/main arm64 libmediainfo0v5 arm64 26.05+dfsg-1 [2938 kB]
+Obter:4 http://kali.download/kali kali-rolling/main arm64 mediainfo arm64 26.05-1 [87,9 kB]
+Obtidos 3153 kB em 1s (2598 kB/s)
+A seleccionar pacote anteriormente não seleccionado libtinyxml2-11:arm64.
+(A ler a base de dados ... (A ler a base de dados ... 5%(A ler a base de dados ... 10%(A ler a base de dados ... 15%(A ler a base de dados ... 20%(A ler a base de dados ... 25%(A ler a base de dados ... 30%(A ler a base de dados ... 35%(A ler a base de dados ... 40%(A ler a base de dados ... 45%(A ler a base de dados ... 50%(A ler a base de dados ... 55%(A ler a base de dados ... 60%(A ler a base de dados ... 65%(A ler a base de dados ... 70%(A ler a base de dados ... 75%(A ler a base de dados ... 80%(A ler a base de dados ... 85%(A ler a base de dados ... 90%(A ler a base de dados ... 95%(A ler a base de dados ... 100%(A ler a base de dados ... 454025 ficheiros e diretórios atualmente instalados.)
+A preparar para desempacotar .../libtinyxml2-11_11.0.0+dfsg-1+b3_arm64.deb ...
+A descompactar libtinyxml2-11:arm64 (11.0.0+dfsg-1+b3) ...
+A seleccionar pacote anteriormente não seleccionado libzen0t64:arm64.
+A preparar para desempacotar .../libzen0t64_0.4.41-4+b1_arm64.deb ...
+A descompactar libzen0t64:arm64 (0.4.41-4+b1) ...
+A seleccionar pacote anteriormente não seleccionado libmediainfo0v5:arm64.
+A preparar para desempacotar .../libmediainfo0v5_26.05+dfsg-1_arm64.deb ...
+A descompactar libmediainfo0v5:arm64 (26.05+dfsg-1) ...
+A seleccionar pacote anteriormente não seleccionado mediainfo.
+A preparar para desempacotar .../mediainfo_26.05-1_arm64.deb ...
+A descompactar mediainfo (26.05-1) ...
+A configurar libtinyxml2-11:arm64 (11.0.0+dfsg-1+b3) ...
+A configurar libzen0t64:arm64 (0.4.41-4+b1) ...
+A configurar libmediainfo0v5:arm64 (26.05+dfsg-1) ...
+A configurar mediainfo (26.05-1) ...
+A processar 'triggers' para libc-bin (2.43-4) ...
+A processar 'triggers' para man-db (2.13.1-1+b1) ...
+A processar 'triggers' para kali-menu (2026.3.2) ...
+sudo apt install mediainfo

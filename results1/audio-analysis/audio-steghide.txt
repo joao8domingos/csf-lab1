@@ -1,0 +1,7 @@
+=== steghide info ===
+"dj_cara_after_hours.REAL.wav":
+  format: wave audio, PCM encoding
+  capacity: 3,8 MB
+Try to get information about embedded data ? (y/n) 
+Enter passphrase: 
+steghide: could not extract any data with that passphrase!

@@ -1,0 +1,6 @@
+=== WAV chunk structure ===
+total size: 129049812
+RIFF: b'RIFF' | size+8: 129049812 | format: b'WAVE'
+chunk 'fmt ' at 12, size 16
+chunk 'data' at 36, size 129049768
+  data: 44..129049812

@@ -1,0 +1,37 @@
+=== [AUD-01] dj_cara_after_hours.wav ===
+Provenance: .git full history, commit 95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e, path Music/
+Registered: 2026-09-17T10:33:05+00:00
+Access: 2026-09-17 10:22:43.431460458 +0100
+Modify: 2026-09-17 08:51:44.000000000 +0100
+Change: 2026-09-17 10:22:43.431569250 +0100
+Birth:  2026-09-17 10:22:43.431460458 +0100
+Size:   134 bytes
+artifacts/fenix-var-git-full-history/95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e/Music/dj_cara_after_hours.wav: ASCII text
+aa80318892e9e0a30230678774092b66b9a82719ceef132445f42e63b0ed6e67  artifacts/fenix-var-git-full-history/95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e/Music/dj_cara_after_hours.wav
+66c4394a984c726715aff9e5686828c5c317f7ba288f6c088ce286da7e6e2f6d7331ff5df0829baf3ea079f6b975ca72a15cd1c456a73e1e62889a7b437b7e28  artifacts/fenix-var-git-full-history/95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e/Music/dj_cara_after_hours.wav
+--- cross-check vs colleague's hashes ---
+=== [AUD-01] dj_cara_after_hours.wav (REAL, LFS-resolved) ===
+Provenance: Git LFS object, resolved by colleague; original path .git .../Music/
+Registered: 2026-09-17T11:08:46+00:00
+Access: 2026-09-17 11:52:59.465743201 +0100
+Modify: 2026-09-17 11:53:03.503723203 +0100
+Change: 2026-09-17 11:56:40.976904650 +0100
+Birth:  2026-09-17 11:52:59.465743201 +0100
+Size:   129049812 bytes
+results/lfs-objects/dj_cara_after_hours.wav: RIFF (little-endian) data, WAVE audio, Microsoft PCM, 16 bit, stereo 48000 Hz
+2b61eecffc5261dcc05d833c64454b42d33f445d3df09095988d0c2dbbc8753d  results/lfs-objects/dj_cara_after_hours.wav
+cf7285f53558ffc7db3d4262ddbec0de1287e27d135edea60bb1b7aa359bd8aa964896667717c19412c284d7a91ecdf235bcc29c1ced76acc425bd06819964ea  results/lfs-objects/dj_cara_after_hours.wav
+=== [AUD-01-A] AUD-01-diff-LminusR.wav (parent AUD-01, method: sox oops remix 1 = L-R mono) ===
+artifacts/audio-extracted/AUD-01-diff-LminusR.wav: RIFF (little-endian) data, WAVE audio, Microsoft PCM, 16 bit, mono 48000 Hz
+Size: 64524928 bytes
+462f58918058666ec914fd7238c4c8ebbc091b72461ce8239ca36639aafe3998  artifacts/audio-extracted/AUD-01-diff-LminusR.wav
+=== [AUD-01-B] AUD-01-B-hidden-code.diff ===
+Parent: AUD-01 | Method: spectrogram read of L-R difference, band 19685-21545 Hz, t=1.87-421s, paginated layout (9 pages x 47.50s)
+Registered: 2026-09-18T13:59:26+00:00
+Access: 2026-09-18 14:58:20.671869127 +0100
+Modify: 2026-09-18 14:58:20.676055043 +0100
+Change: 2026-09-18 14:58:20.676055043 +0100
+Birth:  2026-09-18 14:58:20.671869127 +0100
+Size:   1869 bytes
+artifacts/audio-extracted/AUD-01-B-hidden-code.diff: unified diff output, ASCII text
+2c0472579d6516884461e038d41238a6de15731beaf6c0736d10da527d8a6b9f  artifacts/audio-extracted/AUD-01-B-hidden-code.diff

@@ -1,0 +1,13 @@
+## Deep video analysis — Grand Theft Auto VI Trailer 1.mp4 (from .git full-history commit 95f15e90.../Videos)
+2026-09-17T09:37:34+00:00
+## FASE 2 — structure mapping (file is NOT a video; polyglot/embedded-PDF suspected)
+2026-09-17T09:53:29+00:00
+## FASE 3 — PDF extraction & analysis (VID-01-A, parent VID-01)
+2026-09-17T10:00:12+00:00
+## FASE 3b — full text dump + keyword search + manifest checkpoint
+2026-09-17T10:03:00+00:00
+=== keyword search: password/key/credential/amelia/SEC014/secret ===
+## FASE 4 — full-text keyword sweep + obj1 stream (HTML/PNG layer)
+2026-09-17T10:04:41+00:00
+## FASE 5 — close video analysis (PDF confirmed as the secret by instructor)
+2026-09-17T10:14:07+00:00

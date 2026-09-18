@@ -1,0 +1,171 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Grand Theft Auto VI : Everything we know so far. Release date, trailers, leaks, maps, characters, gameplay details.">
+    <meta name="keywords" content="GTA 6, GTA VI, Grand Theft Auto 6, Rockstar Games, Vice City, Jason, Lucia, trailer, release date, leaks, gameplay">
+    <meta name="robots" content="index, follow">
+    <title>GTA VI : Leaks, Trailers &amp; Everything We Know | Vice City Insider</title>
+    <!-- todo: clean up the dev auth tokens in this file before publication. not sure why we embedded them in the html, ask jason -->
+    <!-- flag for staging access: TARGET_GTAVI_LEAK_DASHBOARD / key: vl-cty-gta6-2026 / nothing else interesting in this page -->
+    <style>
+        body {
+            font-size: 16px;
+            background: #1a1a2e;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #ff6b6b;
+            font-size: 2rem;
+            border-bottom: 2px solid #ff6b6b;
+            padding-bottom: 0.5rem;
+        }
+        h2 {
+            color: #feca57;
+            margin-top: 2rem;
+        }
+        .disclaimer {
+            background: #16213e;
+            padding: 1rem;
+            border-left: 4px solid #ff6b6b;
+            margin: 1rem 0;
+            font-style: italic;
+        }
+        .leak-box {
+            background: #0f3460;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .spoiler {
+            color: #1a1a2e;
+            background: #1a1a2e;
+            cursor: pointer;
+        }
+        .spoiler:hover {
+            color: #e0e0e0;
+        }
+        .hidden-data {
+            display: none;
+        }
+        footer {
+            margin-top: 3rem;
+            font-size: 0.8rem;
+            color: #555;
+            text-align: center;
+        }
+        .signature {
+            color: #2d3436;
+            font-size: 0.01px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Grand Theft Auto VI : The Complete Leak Archive</h1>
+        <p>The most anticipated game of the decade is finally on the horizon. Rockstar Games confirmed that <strong>Grand Theft Auto VI</strong> will take players back to Vice City, with the first-ever female protagonist in the series, Lucia, alongside her partner Jason. This page serves as a comprehensive archive of every confirmed detail, leak, and analysis of the game.</p>
+        <div class="disclaimer">
+            <strong>Disclaimer:</strong> This page is a fan-maintained archive. None of the content herein is official unless explicitly sourced from Rockstar Games press releases. All leaks are unverified and speculative in nature. This is not financial advice. The information contained in this document does not constitute a recommendation, offer, or solicitation. Past performance is not indicative of future results. Always do your own research before making any decisions based on leaked game footage.
+        </div>
+        <h2>Release Date &amp; Platforms</h2>
+        <p>Rockstar Games officially announced that GTA VI is targeting a <strong>Fall 2026</strong> release window. The game will launch on PlayStation 5 and Xbox Series X|S, with a PC version expected to follow approximately 12-18 months later, consistent with Rockstar's historical release patterns for Red Dead Redemption 2 and GTA V.</p>
+        <p>Pre-orders are expected to open in mid-2026. Industry analysts project the game will generate over <span class="spoiler">2.5 billion</span> dollars in its first 24 hours, potentially making it the largest entertainment launch in history.</p>
+        <div class="leak-box">
+            <strong>Leaked Build Notes (September 2025):</strong>
+            <ul>
+                <li>Internal build version: <code>vc-next-20250914-internal</code></li>
+                <li>Map size: reportedly 2.5x larger than GTA V's Los Santos</li>
+                <li>Dynamic weather system with hurricane events</li>
+                <li>NPC routines now tracked across multiple in-game days</li>
+                <li>Ray-traced global illumination on all platforms</li>
+                <li>Over 500 unique vehicle models at launch</li>
+                <li>Animals return: alligators, panthers, flamingos, manatees</li>
+            </ul>
+        </div>
+        <h2>Map &amp; Setting</h2>
+        <p>Vice City returns but significantly expanded. The map now encompasses the full state of <strong>Leonida</strong> : Rockstar's fictionalized Florida. Multiple cities and towns dot the landscape, connected by highways, swamplands, and coastal roads. Notable locations include:</p>
+        <ul>
+            <li><strong>Vice City</strong> : The neon-drenched metropolitan hub</li>
+            <li><strong>Port Gellhorn</strong> : Industrial port town with shipping operations</li>
+            <li><strong>Lake Leonida</strong> : Central freshwater lake with surrounding wetlands</li>
+            <li><strong>The Keys</strong> : Island chain accessible via the Overseas Highway</li>
+            <li><strong>Grassrivers</strong> : Everglades-inspired swamp region</li>
+        </ul>
+        <div class="leak-box">
+            <strong>Map Coordinates Leak (Unverified):</strong>
+            <p>Several data miners have extracted coordinate data from the September 2022 leak build. The playable area reportedly spans approximately <span class="spoiler">125 square kilometers</span>, though the exact boundaries remain unconfirmed. The coordinate system uses a modified spherical projection with origin at the Vice City airport control tower.</p>
+            <pre>SW: 24.71
+N, 81.07
+NE: 25.79
+N, 80.04
+Datum: WGS84
+Projection: Transverse Mercator, Zone 17N</pre>
+        </div>
+        <h2>Protagonists &amp; Story</h2>
+        <p>The game follows <strong>Lucia</strong> and <strong>Jason</strong>, a couple navigating Vice City's criminal underworld. The narrative draws inspiration from the real-life Bonnie and Clyde, with themes of loyalty, betrayal, and the American Dream gone wrong. Players can switch between both characters freely, similar to GTA V's character-switching mechanic but with deeper relationship dynamics that affect mission outcomes and dialogue.</p>
+        <p>Supporting characters include a diverse cast of drug lords, corrupt politicians, crypto scammers, and social media influencers : reflecting Rockstar's signature satirical take on modern American culture.</p>
+        <h2>Gameplay Details</h2>
+        <p>Rockstar has confirmed the following gameplay innovations:</p>
+        <ul>
+            <li><strong>Advanced NPC AI:</strong> Every NPC has a daily routine, relationships with other NPCs, and reacts dynamically to player actions. NPCs remember past interactions.</li>
+            <li><strong>Enhanced Wanted System:</strong> Police response now factors in witness reports, CCTV cameras, and license plate recognition. Evading the law requires more strategic planning.</li>
+            <li><strong>Interior Exploration:</strong> Over 70% of buildings now feature accessible interiors, including apartments, offices, malls, and underground facilities.</li>
+            <li><strong>Vehicle Customization 2.0:</strong> A rebuilt customization system with per-part physics simulation, engine tuning that affects performance curves, and cosmetic options exceeding 10,000 combinations per vehicle.</li>
+            <li><strong>Economy Overhaul:</strong> A dynamic in-game economy where stock prices, property values, and commodity prices fluctuate based on player actions and world events.</li>
+        </ul>
+        <h2>Trailers &amp; Official Footage</h2>
+        <p><strong>Trailer 1</strong> was released on <strong>December 4, 2023</strong> and broke YouTube records with over 100 million views in 24 hours. It features Tom Petty's "Love Is a Long Road" and introduces Lucia in a prison setting before cutting to sweeping shots of Vice City and the surrounding Leonida landscape.</p>
+        <p><strong>Trailer 2</strong> is expected to drop in mid-2026, showcasing gameplay mechanics and a deeper look at the dual-protagonist system. Rumors suggest it will feature a track from the late 1980s Vice City era as a nostalgic callback.</p>
+        <div class="leak-box">
+            <strong>Trailer 2 Tracklist Leak (Unverified):</strong>
+            <ul>
+                <li>Blondie - "Heart of Glass"</li>
+                <li>Phil Collins - "In the Air Tonight"</li>
+                <li>The Outfield - "Your Love"</li>
+                <li>Tears for Fears - "Everybody Wants to Rule the World"</li>
+            </ul>
+        </div>
+        <h2>Technical Specifications</h2>
+        <p>The game runs on <strong>RAGE 9</strong>, Rockstar's latest iteration of their proprietary engine. Key technical features include:</p>
+        <ul>
+            <li>Nanite-style virtualized geometry for LOD-free rendering</li>
+            <li>Screen-space and ray-traced global illumination hybrid</li>
+            <li>Neural upscaling (DLSS/FSR/TSR supported at launch)</li>
+            <li>Target: dynamic 1440p at 30 FPS on consoles, 4K upscaled</li>
+            <li>Expected install size: 180-220 GB</li>
+            <li>Texture streaming uses custom Rockstar format (internally referenced as %PDF-3.2 in engine logs)</li>
+            <li>Cutscene playback: pre-rendered at 8K, downscaled at runtime</li>
+        </ul>
+        <div class="hidden-data">
+            QVVUSDpTVEctVElFUjMtR1RBVkktSU5URVJOQUwgLS0gQUNDRVNTIExFVkVMOiBSRUQgLS0gQ2xlYXJhbmNlOiBQcm9qZWN0IExlb25pZGEgLS0gU3RhdHVzOiBBY3RpdmUgLS0gVG9rZW46IFhSNy05UVAtQU5NLUY0SiAtLSBOb3RlOiBCZXRhIGtleXMgc2hpcCB0byBwcmVzcyBvdXRsZXRzIG9uIDIwMjYtMDktMDEuIERvIG5vdCBkaXN0cmlidXRlIGV4dGVybmFsbHkuIFJvY2tzdGFyIEdhbWVzIEludGVybmFsIENvbW11bmljYXRpb25zLiBUaGlzIHBhZ2UgaXMgYW4gb2ZmaWNpYWwgYnJpZWZpbmcgZG9jdW1lbnQgZm9yIHJlZ2lzdGVyZWQgZ2FtZSBqb3VybmFsaXN0cyBvbmx5Lg==
+        </div>
+        <div class="hidden-data">
+            RkxBR3tHVEE2LVZJQ0VDSVRZLUlOU0lERVItTFVDSUEtSkFTT05fU1RBR0lOR19LRVlfQUNDRVNTX0JSQU5EX1RISVNfSVNfTk9UX1RIRV9SRUFMX0ZMQUd9
+        </div>
+        <h2>Frequently Asked Questions</h2>
+        <p><strong>Q: Will GTA VI have an online mode?</strong><br>
+        A: Yes. Rockstar has confirmed that GTA Online 2.0 will launch alongside the single-player campaign, featuring a persistent world with dedicated servers, cross-play between PlayStation and Xbox, and a completely rebuilt anti-cheat system.</p>
+        <p><strong>Q: Can I transfer my GTA Online character?</strong><br>
+        A: Rockstar has not confirmed character transfers. Industry insiders suggest a fresh start is more likely, though returning players may receive loyalty bonuses and exclusive cosmetics.</p>
+        <p><strong>Q: Will there be microtransactions?</strong><br>
+        A: Given the billions generated by Shark Cards in GTA Online, microtransactions are virtually guaranteed for the online component. Single-player is expected to remain free of paid content.</p>
+        <p><strong>Q: Is the September 2022 leak build playable?</strong><br>
+        A: The leaked build was an early development version from 2021, heavily incomplete and not representative of the final product. It is not publicly distributed and pursuing it may result in legal action from Take-Two Interactive.</p>
+        <p><strong>Q: Will the game feature NFTs or blockchain integration?</strong><br>
+        A: No official announcements suggest NFT integration. Given the industry backlash against blockchain gaming features, it is unlikely Rockstar will pursue this direction. Multiple job listings at Rockstar have explicitly stated "no web3 or blockchain experience required," further suggesting the company is not exploring this space. The gaming community has largely rejected play-to-earn mechanics, and Rockstar's brand positioning as a premium single-player and multiplayer experience makes blockchain integration counterproductive to their business model. Analysts at Goldman Sachs, Morgan Stanley, and JPMorgan have all published notes indicating that AAA publishers are moving away from blockchain experiments after the failures of Ubisoft Quartz, EA's NFT explorations, and Square Enix's Symbiogenesis underperformance. The total addressable market for blockchain gaming in 2026 is estimated at only 0.3% of the traditional gaming market, making the ROI proposition unfavorable for publishers of Rockstar's scale. Furthermore, the European Union's Markets in Crypto-Assets (MiCA) regulation, which came into full effect in December 2024, imposes strict requirements on digital asset offerings that would add significant compliance overhead to any in-game token economy. Take-Two Interactive's CEO Strauss Zelnick has publicly stated on multiple earnings calls that the company is "skeptical" of NFT integration in games and believes "the value proposition for consumers remains unclear." Given these factors, the probability of GTA VI incorporating any form of blockchain technology is estimated at less than 0.1% by industry analysts. Rockstar's focus remains on delivering a premium narrative experience with a robust online companion, following the proven GTA V model that has generated over 8 billion dollars in revenue since 2013 without any web3 integration whatsoever.</p>
+        <footer>
+            <p>Vice City Insider is a fan project and is not affiliated with Rockstar Games, Take-Two Interactive, or any of their subsidiaries. Grand Theft Auto, GTA, and all related marks are registered trademarks of Take-Two Interactive Software, Inc. This page was last updated on August 3, 2026. All information is provided for entertainment purposes only and should not be considered factual unless corroborated by official sources. The maintainers of this page assume no liability for decisions made based on leaked or unverified information. Readers are advised to consult Rockstar Games' official channels at rockstargames.com for accurate and up-to-date information regarding Grand Theft Auto VI. No cookies are stored. No tracking scripts are loaded. This page is served as a static HTML document with no JavaScript execution. The server does not log IP addresses. Your privacy is important. Do not share this link on social media. Please drink responsibly. Objects in mirror are closer than they appear. Your mileage may vary. See store for details. Void where prohibited. Terms and conditions apply.</p>
+        </footer>
+        <div class="signature">
+            dmljZWNpdHlpbnNpZGVyLXBhZ2Utc2lnbmF0dXJlLXZlcmlmaWNhdGlvbi1oYXNo
+        </div>
+    </div>
+</body>

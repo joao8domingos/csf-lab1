@@ -1,4 +1,5 @@
 artifacts/
 results/
 .DS_Store
-**/ .DS_Store
+**/.DS_Store
+results1/audio-analysis/channels/*.wav

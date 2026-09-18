@@ -1,0 +1,51 @@
+Quer instalá-lo? (N/s)A ler as listas de pacotes...
+A construir árvore de dependências...
+A ler a informação de estado...
+A resolver dependências: ...
+Os seguintes pacotes foram instalados automaticamente e já não são necessários:
+  bluez-hcidump              libjim0.83         libvidstab1.1
+  firmware-marvell-prestera  libkmlbase1t64     libx265-215
+  libabsl20260107            libkmldom1t64      openssh-client-gssapi
+  libbluray3                 libkmlengine1t64   perl-modules-5.40
+  libconfig++11              libntfs-3g89t64    python3.13
+  libconfig11                libopenjph0.27     python3.13-dev
+  libhdf5-310                libperl5.40        python3.13-minimal
+  libhdf5-hl-310             libpoppler156      python3.13-venv
+  libimath-3-1-29t64         libpython3.13-dev  rpcsvc-proto
+Utilize 'sudo apt autoremove' para os remover.
+
+A instalar:
+  ffmpeg
+
+A instalar dependências:
+  libavc1394-0  libavdevice62
+
+Pacotes sugeridos:
+  ffmpeg-doc
+
+Sumário:
+  A atualizar: 0, A instalar: 3, A remover: 0, A não atualizar: 146
+  Tamanho da descarga: 2192 kB
+  Espaço necessário: 3499 kB / 19,6 GB disponível
+
+Continuar? [S/n] Obter:1 http://kali.download/kali kali-rolling/main arm64 libavc1394-0 arm64 0.5.4-6 [17,7 kB]
+Obter:2 http://http.kali.org/kali kali-rolling/main arm64 libavdevice62 arm64 7:8.1.2-2+b3 [102 kB]
+Obter:3 http://http.kali.org/kali kali-rolling/main arm64 ffmpeg arm64 7:8.1.2-2+b3 [2073 kB]
+Obtidos 2192 kB em 1s (2106 kB/s)
+A seleccionar pacote anteriormente não seleccionado libavc1394-0:arm64.
+(A ler a base de dados ... (A ler a base de dados ... 5%(A ler a base de dados ... 10%(A ler a base de dados ... 15%(A ler a base de dados ... 20%(A ler a base de dados ... 25%(A ler a base de dados ... 30%(A ler a base de dados ... 35%(A ler a base de dados ... 40%(A ler a base de dados ... 45%(A ler a base de dados ... 50%(A ler a base de dados ... 55%(A ler a base de dados ... 60%(A ler a base de dados ... 65%(A ler a base de dados ... 70%(A ler a base de dados ... 75%(A ler a base de dados ... 80%(A ler a base de dados ... 85%(A ler a base de dados ... 90%(A ler a base de dados ... 95%(A ler a base de dados ... 100%(A ler a base de dados ... 454053 ficheiros e diretórios atualmente instalados.)
+A preparar para desempacotar .../libavc1394-0_0.5.4-6_arm64.deb ...
+A descompactar libavc1394-0:arm64 (0.5.4-6) ...
+A seleccionar pacote anteriormente não seleccionado libavdevice62:arm64.
+A preparar para desempacotar .../libavdevice62_7%3a8.1.2-2+b3_arm64.deb ...
+A descompactar libavdevice62:arm64 (7:8.1.2-2+b3) ...
+A seleccionar pacote anteriormente não seleccionado ffmpeg.
+A preparar para desempacotar .../ffmpeg_7%3a8.1.2-2+b3_arm64.deb ...
+A descompactar ffmpeg (7:8.1.2-2+b3) ...
+A configurar libavc1394-0:arm64 (0.5.4-6) ...
+A configurar libavdevice62:arm64 (7:8.1.2-2+b3) ...
+A configurar ffmpeg (7:8.1.2-2+b3) ...
+A processar 'triggers' para libc-bin (2.43-4) ...
+A processar 'triggers' para man-db (2.13.1-1+b1) ...
+A processar 'triggers' para kali-menu (2026.3.2) ...
+sudo apt install ffmpeg
