@@ -1,14 +1,483 @@
 ## Deep audio analysis — dj_cara_after_hours.wav (from .git full-history, commit 95f15e90.../Music)
 2026-09-17T10:33:05+00:00
+cd ~/csf-lab1/csf-lab1
+OUT=results1/audio-analysis
+LOG=commands1-audio.txt
+mkdir -p "$OUT"
+
+AUD="artifacts/fenix-var-git-full-history/95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e/Music/dj_cara_after_hours.wav"
+
+echo "## Deep audio analysis — dj_cara_after_hours.wav (from .git full-history, commit 95f15e90.../Music)" >> "$LOG"
+date --utc --iso-8601=seconds >> "$LOG"
+
+{
+  echo "=== [AUD-01] dj_cara_after_hours.wav ==="
+  echo "Provenance: .git full history, commit 95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e, path Music/"
+  echo "Registered: $(date --utc --iso-8601=seconds)"
+  stat -c "Access: %x
+Modify: %y
+Change: %z
+Birth:  %w
+Size:   %s bytes" "$AUD"
+  file "$AUD"
+  sha256sum "$AUD"
+  sha512sum "$AUD"
+} | tee "$OUT/audio-register.txt"
+
+echo "--- cross-check vs colleague's hashes ---" | tee -a "$OUT/audio-register.txt"
+grep -rn "dj_cara_after_hours" results/ commands.txt commands-git.txt 2>/dev/null | tee -a "$OUT/audio-register.txt"
+
+mkdir -p artifacts/audio-working-copy
+cp --preserve=timestamps "$AUD" artifacts/audio-working-copy/
+WAV="artifacts/audio-working-copy/dj_cara_after_hours.wav"
+echo "--- working copy integrity ---"
+sha256sum "$AUD" "$WAV"
+
+# (na mesma fase) exiftool/mediainfo/ffprobe + estrutura de chunks WAV + binwalk/strings do ponteiro
+WAV="artifacts/audio-working-copy/dj_cara_after_hours.wav"
+OUT=results1/audio-analysis
+
+exiftool -a -u -g1 "$WAV" | tee "$OUT/audio-exiftool.txt"
+mediainfo "$WAV" | tee "$OUT/audio-mediainfo.txt"
+ffprobe -hide_banner -v quiet -print_format json -show_format -show_streams "$WAV" | tee "$OUT/audio-ffprobe.json"
+
+echo "=== WAV chunk structure ===" | tee "$OUT/audio-structure.txt"
+python3 << 'PYEOF' | tee -a "$OUT/audio-structure.txt"
+import struct
+data=open("artifacts/audio-working-copy/dj_cara_after_hours.wav","rb").read()
+print("total size:", len(data))
+print("RIFF header:", data[:4], "| size field:", struct.unpack('<I',data[4:8])[0]+8, "| format:", data[8:12])
+off=12
+while off+8 <= len(data):
+    cid=data[off:off+4]; csz=struct.unpack('<I',data[off+4:off+8])[0]
+    print(f"chunk {cid} at {off}, size {csz}")
+    if cid==b'data':
+        data_end=off+8+csz
+        print(f"  data chunk: {off+8}..{data_end}")
+        if data_end < len(data):
+            print(f"  *** {len(data)-data_end} bytes AFTER data chunk (possible appended payload) ***")
+            print("  hex:", data[data_end:data_end+120].hex())
+    off += 8 + csz + (csz & 1)
+PYEOF
+
+binwalk "$WAV" | tee "$OUT/audio-binwalk.txt"
+strings -n 8 "$WAV" | tee "$OUT/audio-strings.txt" | head -40
+echo "=== last 64 bytes ===" ; tail -c 64 "$WAV" | xxd
+
 ## AUD-01 is a Git LFS pointer, not the audio itself
 2026-09-17T10:40:15+00:00
+cd ~/csf-lab1/csf-lab1
+OUT=results1/audio-analysis
+LOG=commands1-audio.txt
+
+echo "## AUD-01 is a Git LFS pointer, not the audio itself" >> "$LOG"
+date --utc --iso-8601=seconds >> "$LOG"
+
+# Guardar o conteúdo do ponteiro como evidência
+cp --preserve=timestamps artifacts/audio-working-copy/dj_cara_after_hours.wav \
+   artifacts/audio-working-copy/dj_cara_after_hours.wav.lfs-pointer.txt
+cat artifacts/audio-working-copy/dj_cara_after_hours.wav | tee "$OUT/lfs-pointer-content.txt"
+
+# Findings
+cat > "$OUT/audio-findings.md" << 'EOF'
+# Findings — AUD-01 (dj_cara_after_hours.wav)
+
+## A-01 — O ficheiro no repositório é um ponteiro Git LFS, não o áudio
+OBSERVAÇÃO: dj_cara_after_hours.wav tem apenas 134 bytes; `file` identifica ASCII text.
+Conteúdo:
+  version https://git-lfs.github.com/spec/v1
+  oid sha256:2b61eecffc5261dcc05d833c64454b42d33f445d3df09095988d0c2dbbc8753d
+  size 129049812
+INTERPRETAÇÃO: o áudio real (~123 MB) é gerido por Git LFS e NÃO está presente no
+repositório extraído — só o ponteiro. O checkout/git-dumper não resolveu o objeto LFS.
+DADOS ÚTEIS DO PONTEIRO:
+  - SHA-256 esperado do WAV real: 2b61eecffc5261dcc05d833c64454b42d33f445d3df09095988d0c2dbbc8753d
+  - tamanho esperado: 129 049 812 bytes
+  - o autor usava Git LFS (detalhe de perfil técnico)
+STATUS: conteúdo do áudio indisponível nesta extração; obtenção depende do servidor LFS.
+
+## A-02 — Registo do ponteiro
+sha256 do ponteiro (134 bytes): aa80318892e9e0a30230678774092b66b9a82719ceef132445f42e63b0ed6e67
+EOF
+echo "audio-findings.md criado."
+
+# instalação de ferramentas adicionais para a fase seguinte
+sudo apt update && sudo apt install -y sox libsox-fmt-all audacity ffmpeg steghide xxd
+# sox = espectrograma + manipulação de canais; ffmpeg = extração/conversão; audacity = inspeção visual manual
+
 ## AUD-01 REAL FILE (resolved from Git LFS by colleague) — deep analysis
 2026-09-17T11:08:46+00:00
+cd ~/csf-lab1/csf-lab1
+OUT=results1/audio-analysis
+LOG=commands1-audio.txt
+AUD="results/lfs-objects/dj_cara_after_hours.wav"
+
+echo "## AUD-01 REAL FILE (resolved from Git LFS by colleague) — deep analysis" >> "$LOG"
+date --utc --iso-8601=seconds >> "$LOG"
+
+# Registo completo do ficheiro real (AUD-01-REAL)
+{
+  echo "=== [AUD-01] dj_cara_after_hours.wav (REAL, LFS-resolved) ==="
+  echo "Provenance: Git LFS object, resolved by colleague; original path .git .../Music/"
+  echo "Registered: $(date --utc --iso-8601=seconds)"
+  stat -c "Access: %x
+Modify: %y
+Change: %z
+Birth:  %w
+Size:   %s bytes" "$AUD"
+  file "$AUD"
+  sha256sum "$AUD"
+  sha512sum "$AUD"
+} | tee -a "$OUT/audio-register.txt"
+
+# VERIFICAÇÃO CRÍTICA contra o ponteiro LFS (prova de que é o áudio original)
+echo "=== LFS integrity verification ===" | tee "$OUT/lfs-verification.txt"
+EXPECTED_OID="2b61eecffc5261dcc05d833c64454b42d33f445d3df09095988d0c2dbbc8753d"
+EXPECTED_SIZE="129049812"
+ACTUAL_OID=$(sha256sum "$AUD" | cut -d' ' -f1)
+ACTUAL_SIZE=$(stat -c %s "$AUD")
+{
+  echo "expected oid : $EXPECTED_OID"
+  echo "actual   oid : $ACTUAL_OID"
+  echo "expected size: $EXPECTED_SIZE"
+  echo "actual   size: $ACTUAL_SIZE"
+  [ "$ACTUAL_OID" = "$EXPECTED_OID" ] && echo "OID MATCH ✓" || echo "OID MISMATCH ✗ — PARAR"
+  [ "$ACTUAL_SIZE" = "$EXPECTED_SIZE" ] && echo "SIZE MATCH ✓" || echo "SIZE MISMATCH ✗"
+} | tee -a "$OUT/lfs-verification.txt"
+
+# Cópia de trabalho
+cp --preserve=timestamps "$AUD" artifacts/audio-working-copy/dj_cara_after_hours.REAL.wav
+WAV="artifacts/audio-working-copy/dj_cara_after_hours.REAL.wav"
+sha256sum "$AUD" "$WAV"
+
+# Propriedades do stream + estrutura de chunks + binwalk/strings + steghide info (sobre o ficheiro REAL)
+WAV="artifacts/audio-working-copy/dj_cara_after_hours.REAL.wav"
+OUT=results1/audio-analysis
+
+exiftool -a -u -g1 "$WAV" | tee "$OUT/audio-exiftool.txt"
+mediainfo "$WAV" | tee "$OUT/audio-mediainfo.txt"
+ffprobe -hide_banner -v quiet -print_format json -show_format -show_streams "$WAV" | tee "$OUT/audio-ffprobe.json"
+sox --info "$WAV" 2>&1 | tee "$OUT/audio-soxinfo.txt"
+
+echo "=== WAV chunk structure ===" | tee "$OUT/audio-structure.txt"
+python3 << 'PYEOF' | tee -a "$OUT/audio-structure.txt"
+import struct
+p="artifacts/audio-working-copy/dj_cara_after_hours.REAL.wav"
+data=open(p,"rb").read()
+print("total size:", len(data))
+print("RIFF:", data[:4], "| size+8:", struct.unpack('<I',data[4:8])[0]+8, "| format:", data[8:12])
+off=12
+while off+8 <= len(data):
+    cid=data[off:off+4]
+    try: csz=struct.unpack('<I',data[off+4:off+8])[0]
+    except: break
+    printable = cid.decode('ascii','replace')
+    print(f"chunk '{printable}' at {off}, size {csz}")
+    if cid==b'data':
+        de=off+8+csz
+        print(f"  data: {off+8}..{de}")
+        if de < len(data):
+            print(f"  *** {len(data)-de} bytes AFTER data chunk ***")
+            print("  hex:", data[de:de+160].hex())
+    off += 8 + csz + (csz & 1)
+    if csz > len(data):
+        print("  (declared size exceeds file — stopping)"); break
+PYEOF
+
+binwalk "$WAV" | tee "$OUT/audio-binwalk.txt"
+strings -n 8 "$WAV" | tee "$OUT/audio-strings.txt" | head -50
+echo "=== tail 128 bytes ===" | tee "$OUT/audio-tail.txt"
+tail -c 128 "$WAV" | xxd | tee -a "$OUT/audio-tail.txt"
+
+echo "=== steghide info ===" | tee "$OUT/audio-steghide.txt"
+steghide info "$WAV" 2>&1 | tee -a "$OUT/audio-steghide.txt"
+
 ## FASE 2 — spectrograms (full, per-channel) + channel analysis
 2026-09-17T11:13:03+00:00
+cd ~/csf-lab1/csf-lab1
+OUT=results1/audio-analysis
+LOG=commands1-audio.txt
+WAV="artifacts/audio-working-copy/dj_cara_after_hours.REAL.wav"
+mkdir -p "$OUT/spectrograms"
+
+echo "## FASE 2 — spectrograms (full, per-channel) + channel analysis" >> "$LOG"
+date --utc --iso-8601=seconds >> "$LOG"
+
+# Espectrograma global (mix dos canais), alta resolução
+sox "$WAV" -n spectrogram -x 3000 -y 800 -o "$OUT/spectrograms/spec-full.png" 2>&1 | tee -a "$LOG"
+
+# Espectrograma de cada canal separadamente (mensagens podem estar só num canal)
+sox "$WAV" -n remix 1 spectrogram -x 3000 -y 800 -o "$OUT/spectrograms/spec-L.png" 2>&1 | tee -a "$LOG"
+sox "$WAV" -n remix 2 spectrogram -x 3000 -y 800 -o "$OUT/spectrograms/spec-R.png" 2>&1 | tee -a "$LOG"
+
+# Espectrograma da DIFERENÇA dos canais (L-R) — esconderijo estéreo clássico
+sox "$WAV" -n oops spectrogram -x 3000 -y 800 -o "$OUT/spectrograms/spec-diff-LminusR.png" 2>&1 | tee -a "$LOG"
+
+ls -la "$OUT/spectrograms/"
+
+# Separação de canais em ficheiros + comparação de hashes + análise LSB
+OUT=results1/audio-analysis
+WAV="artifacts/audio-working-copy/dj_cara_after_hours.REAL.wav"
+mkdir -p "$OUT/channels" artifacts/audio-extracted
+
+ffmpeg -y -v error -i "$WAV" -filter_complex "channelsplit=channel_layout=stereo[l][r]" \
+  -map "[l]" "$OUT/channels/channel-L.wav" -map "[r]" "$OUT/channels/channel-R.wav"
+echo "canais separados:"; ls -la "$OUT/channels/"
+
+echo "=== channel L vs R sha256 ===" | tee "$OUT/channel-compare.txt"
+sha256sum "$OUT/channels/channel-L.wav" "$OUT/channels/channel-R.wav" | tee -a "$OUT/channel-compare.txt"
+
+python3 << 'PYEOF' | tee "$OUT/lsb-analysis.txt"
+import wave, numpy as np
+w=wave.open("artifacts/audio-working-copy/dj_cara_after_hours.REAL.wav","rb")
+n=w.getnframes(); ch=w.getnchannels(); sw=w.getsampwidth()
+print(f"frames={n} channels={ch} sampwidth={sw}")
+raw=w.readframes(n); w.close()
+a=np.frombuffer(raw, dtype=np.int16).reshape(-1, ch)
+for c in range(ch):
+    lsb=(a[:,c] & 1).astype(np.uint8)
+    for order,label in [(lsb,'MSB-first'),(lsb,'LSB-first')]:
+        bits=lsb[:8*20000]
+        if label=='LSB-first': bits=bits[::1]
+        nbytes=len(bits)//8
+        b=np.packbits(bits[:nbytes*8]) if label=='MSB-first' else np.packbits(bits[:nbytes*8][::-1])[::-1]
+        txt=bytes(b.tolist())
+        printable=sum(32<=x<127 for x in txt[:2000])/max(1,len(txt[:2000]))
+        print(f"\n--- channel {c} LSB ({label}) — printable ratio first 2000B: {printable:.2%} ---")
+        print(txt[:300])
+PYEOF
+
 ## FASE 2b — spectrogram message found in L-R difference (stereo phase steg)
 2026-09-17T12:00:43+00:00
+cd ~/csf-lab1/csf-lab1
+OUT=results1/audio-analysis
+LOG=commands1-audio.txt
+WAV="artifacts/audio-working-copy/dj_cara_after_hours.REAL.wav"
+mkdir -p "$OUT/spectrograms/zoom"
+
+echo "## FASE 2b — spectrogram message found in L-R difference (stereo phase steg)" >> "$LOG"
+date --utc --iso-8601=seconds >> "$LOG"
+
+# A mensagem está nos ~0-440s. Gerar zooms da diferença L-R, por janelas de tempo,
+# em altíssima resolução, focando a banda alta onde está o texto.
+for seg in 0:110 110:220 220:330 330:440; do
+  s="${seg%:*}"; e="${seg#*:}"
+  sox "$WAV" -n oops trim ${s} =${e} spectrogram \
+      -x 4000 -y 1200 -z 90 \
+      -o "$OUT/spectrograms/zoom/diff-${s}-${e}.png" 2>&1 | tee -a "$LOG"
+done
+ls -la "$OUT/spectrograms/zoom/"
+
 ## FASE 2c — isolate the message band and produce clean readable strips
 2026-09-17T12:05:51+00:00
+cd ~/csf-lab1/csf-lab1
+OUT=results1/audio-analysis
+LOG=commands1-audio.txt
+WAV="artifacts/audio-working-copy/dj_cara_after_hours.REAL.wav"
+mkdir -p "$OUT/spectrograms/message" artifacts/audio-extracted
+
+echo "## FASE 2c — isolate the message band and produce clean readable strips" >> "$LOG"
+date --utc --iso-8601=seconds >> "$LOG"
+
+# O texto vive na banda ~18.5-22 kHz. Isolamos essa banda na diferença L-R
+# (bandpass), o que remove a música e deixa só a mensagem — depois espectrograma limpo.
+i=0
+for s in 0 55 110 165 220 275 330 385; do
+  e=$((s+55))
+  sox "$WAV" -n oops \
+      sinc 18000-22500 \
+      trim ${s} =${e} \
+      spectrogram -x 5000 -y 1000 -z 100 -r \
+      -t "message ${s}-${e}s (L-R, 18-22.5kHz)" \
+      -o "$OUT/spectrograms/message/msg-$(printf '%02d' $i)_${s}-${e}.png" 2>&1 | tee -a "$LOG"
+  i=$((i+1))
+done
+ls -la "$OUT/spectrograms/message/"
+
 ## FASE 2d — build L-R difference track for interactive reading in Audacity
 2026-09-17T12:11:08+00:00
+cd ~/csf-lab1/csf-lab1
+OUT=results1/audio-analysis
+LOG=commands1-audio.txt
+WAV="artifacts/audio-working-copy/dj_cara_after_hours.REAL.wav"
+mkdir -p artifacts/audio-extracted
+
+echo "## FASE 2d — build L-R difference track for interactive reading in Audacity" >> "$LOG"
+date --utc --iso-8601=seconds >> "$LOG"
+
+# Criar a diferença L-R como WAV mono (a mensagem fica isolada da música)
+sox "$WAV" artifacts/audio-extracted/AUD-01-diff-LminusR.wav oops remix 1
+
+# Registar o artefacto derivado
+{
+  echo "=== [AUD-01-A] AUD-01-diff-LminusR.wav (parent AUD-01, method: sox oops remix 1 = L-R mono) ==="
+  file artifacts/audio-extracted/AUD-01-diff-LminusR.wav
+  stat -c 'Size: %s bytes' artifacts/audio-extracted/AUD-01-diff-LminusR.wav
+  sha256sum artifacts/audio-extracted/AUD-01-diff-LminusR.wav
+} | tee -a "$OUT/audio-register.txt"
+
+echo "Abre agora no Audacity:"
+echo "  audacity artifacts/audio-extracted/AUD-01-diff-LminusR.wav &"
+
+audacity artifacts/audio-extracted/AUD-01-diff-LminusR.wav &
+
+# Registo dos achados A-03 a A-06 (leitura manual no Audacity, primeira passagem)
+cd ~/csf-lab1/csf-lab1
+OUT=results1/audio-analysis
+
+cat >> "$OUT/audio-findings.md" << 'EOF'
+
+## A-03 — Mensagem escondida no espectrograma da diferença estéreo (L−R)
+[versão inicial — ver correção mais abaixo, secção "FASE 3 — correção A-03"]
+
+## A-04 — LSB das amostras: testado e excluído
+OBSERVAÇÃO: extração do LSB de cada canal (MSB-first e LSB-first) produz bytes de aparência
+aleatória, com "printable ratio" ~37-39% e sem cabeçalhos/texto reconhecíveis.
+INTERPRETAÇÃO: não há mensagem embebida no LSB das amostras PCM. Resultado negativo válido —
+o canal de ocultação é o espectrograma da diferença estéreo (A-03), não o LSB.
+
+## A-05 — Assimetria de canais como evidência corroborante
+OBSERVAÇÃO: channel-L.wav e channel-R.wav têm SHA-256 distintos.
+INTERPRETAÇÃO: a diferença entre canais não é nula — condição necessária para o método de
+A-03. A assimetria é, ela própria, a assinatura da inserção em oposição de fase.
+
+## A-06 — Dados anexados / binwalk: sem payload real
+OBSERVAÇÃO: o chunk 'data' do WAV termina exatamente no fim do ficheiro (sem bytes após EOF).
+As centenas de assinaturas "MySQL/JBOOT/mcrypt/Cisco" reportadas pelo binwalk têm tamanhos
+absurdos (GB dentro de um ficheiro de 123 MB) e são falsos positivos típicos de PCM.
+INTERPRETAÇÃO: não há ficheiros concatenados nem embebidos; o segredo está no sinal (A-03).
+EOF
+echo "audio-findings.md atualizado."
+
+## FASE 3 — timeline entries (datas internas à mensagem escondida)
+[timestamp não capturado ao vivo — reconstruído a partir do histórico da shell, ordem preservada]
+cd ~/csf-lab1/csf-lab1
+cat >> results1/audio-analysis/audio-timeline-entries.txt << 'EOF'
+# Timeline — AUD-01 hidden diff (dates internal to the message, not filesystem)
+2026-03-01T10:14:22Z | query_translator_original.py timestamp | diff header in AUD-01 spectrogram message | UTC (+0000)
+2026-04-12T23:41:05+01:00 | query_translator_patched.py timestamp | diff header in AUD-01 spectrogram message | WEST (+0100)
+EOF
+echo "timeline entries gravadas."
+
+## FASE 4 — extração automática reprodutível (extract_deepfish.py, obtido de verificação externa)
+[timestamp não capturado ao vivo — reconstruído a partir do histórico da shell, ordem preservada]
+cd ~/csf-lab1/csf-lab1
+mkdir -p results1/audio-analysis/extraction
+nano results1/audio-analysis/extraction/extract_deepfish.py
+# (conteúdo do script: ver results1/audio-analysis/extraction/extract_deepfish.py)
+
+cd results1/audio-analysis/extraction
+python3 extract_deepfish.py ~/csf-lab1/csf-lab1/results/lfs-objects/dj_cara_after_hours.wav
+# output: SHA-256 confirmado (2b61eec...8753d) / Integridade confirmada.
+# 9 páginas geradas em ./out/ (pagina0_esq.png .. pagina8_dir.png)
+
+# Registo do artefacto derivado AUD-01-B (o diff extraído, copiado para fora de artifacts/
+# porque artifacts/ está no .gitignore e este ficheiro pequeno deve ficar rastreado)
+{
+  echo "=== [AUD-01-B] AUD-01-B-hidden-code.diff ==="
+  echo "Parent: AUD-01 | Method: spectrogram read of L-R difference, band 19685-21545 Hz, t=1.87-421s, paginated layout (9 pages x 47.50s)"
+  echo "Registered: $(date --utc --iso-8601=seconds)"
+  stat -c "Access: %x
+Modify: %y
+Change: %z
+Birth:  %w
+Size:   %s bytes" artifacts/audio-extracted/AUD-01-B-hidden-code.diff
+  file artifacts/audio-extracted/AUD-01-B-hidden-code.diff
+  sha256sum artifacts/audio-extracted/AUD-01-B-hidden-code.diff
+} | tee -a results1/audio-analysis/audio-register.txt
+
+## FASE 5 — correção do A-03 com a transcrição final verificada (template matching)
+[timestamp não capturado ao vivo — reconstruído a partir do histórico da shell, ordem preservada]
+cd ~/csf-lab1/csf-lab1
+python3 << 'PYEOF'
+path = "results1/audio-analysis/audio-findings.md"
+content = open(path, encoding="utf-8").read()
+
+old_start = "## A-03 — Mensagem escondida no espectrograma da diferença estéreo (L−R)"
+old_end = "## A-04 — LSB das amostras: testado e excluído"
+
+new_block = """## A-03 — Mensagem escondida no espectrograma da diferença estéreo (L−R)
+OBSERVAÇÃO: texto pintado no espectrograma do sinal de diferença (L−R), em oposição de
+fase entre canais. Parâmetros medidos (não assumidos, confirmados por script reproduzível
+extract_deepfish.py): banda 19 685–21 545 Hz; tempo 1,87 s a ~421 s (a partir de ~425 s a
+energia cai ao piso de ruído). NOTA: a energia em 22,05–22,3 kHz NÃO é texto — é bleed da
+música; leitura preliminar anterior (banda 19,9–22,2 kHz) estava incorreta e é aqui
+corrigida.
+LAYOUT: paginado — 9 páginas de 47,50 s cada; dentro de cada página as linhas de texto
+estão EMPILHADAS em frequência (6 linhas nas páginas 0–4; 5 linhas nas páginas 5–8,
+deslocadas ~170 Hz para cima); 79 caracteres por página → 0,6013 s por caractere.
+50 linhas visuais = 35 linhas lógicas (15 são continuações por mudança de linha).
+MÉTODO DE OCULTAÇÃO: ausente nos canais L e R isolados; só emerge na diferença (L−R).
+Canais confirmados com SHA-256 distintos (ver A-05). Verificado por duas vias
+independentes: (1) leitura interativa em Audacity; (2) script Python reproduzível
+(scipy.signal.stft sobre L−R, com supressão de transientes da música por mediana),
+ambos sobre o ficheiro verificado por hash LFS (2b61eec...8753d).
+CONTEÚDO: unified diff de código Python — ver artefacto derivado AUD-01-B
+(artifacts/audio-extracted/AUD-01-B-hidden-code.diff).
+VALIDAÇÃO CRUZADA: o código reconstruído faz parse como Python válido; a escada de
+indentação derivada do código (8/12/16/20/4 espaços) coincide, sem qualquer ajuste, com a
+medida diretamente na grelha do espectrograma — duas medições independentes concordantes.
+INCERTEZA REGISTADA: o limiar em MAX_QUERY_ENTROPY — os dois dígitos são comprovadamente
+idênticos entre si e não são "5", mas à resolução disponível não se exclui "6" em vez de
+"8". Regista-se como 0.88 com esta nota de incerteza.
+CONFIANÇA: alta quanto à existência, natureza, parâmetros de localização e ligação ao caso.
+
+"""
+
+if old_start not in content or old_end not in content:
+    raise SystemExit("Marcadores não encontrados — não fiz alterações. Confirma o ficheiro manualmente.")
+
+i0 = content.index(old_start)
+i1 = content.index(old_end)
+content = content[:i0] + new_block + content[i1:]
+
+open(path, "w", encoding="utf-8").write(content)
+print("A-03 substituído com sucesso.")
+PYEOF
+
+## FASE 6 — teste steghide com passwords-candidatas do caso (A-10)
+[timestamp não capturado ao vivo — reconstruído a partir do histórico da shell, ordem preservada]
+cd ~/csf-lab1/csf-lab1
+WAV="artifacts/audio-working-copy/dj_cara_after_hours.REAL.wav"
+
+# primeira tentativa — invocação errada (falhou: "could not get terminal attributes")
+for p in "vl-cty-gta6-2026" "zaq1XSW@" "peixinho" "AMELIA" "TIER1_MODEL_COMPUTE" "AMELIA_ISOTROPY_TENSORS"; do
+  echo "--- password: $p ---"
+  echo "$p" | steghide extract -sf "$WAV" -xf /tmp/steghide_test_out 2>&1 | tail -2
+done
+
+# invocação corrigida (-p direto) — todas negativas, ver A-10
+for p in "vl-cty-gta6-2026" "zaq1XSW@" "peixinho" "AMELIA" "TIER1_MODEL_COMPUTE" "AMELIA_ISOTROPY_TENSORS"; do
+  echo "--- password: $p ---"
+  steghide extract -sf "$WAV" -p "$p" -xf /tmp/steghide_test_out -f 2>&1 | tail -2
+done
+
+cd ~/csf-lab1/csf-lab1
+cat >> results1/audio-analysis/audio-findings.md << 'EOF'
+
+## A-10 — Teste steghide com passwords-candidatas do caso: negativo
+OBSERVAÇÃO: testadas as passwords "vl-cty-gta6-2026", "zaq1XSW@", "peixinho", "AMELIA",
+"TIER1_MODEL_COMPUTE", "AMELIA_ISOTROPY_TENSORS" via steghide extract sobre
+dj_cara_after_hours.REAL.wav. Todas devolveram "could not extract any data with that
+passphrase".
+INTERPRETAÇÃO: não há dados embebidos por steghide recuperáveis com estas passwords.
+Não prova ausência de esteganografia steghide com outra password, mas exclui as
+candidatas identificadas no caso até agora. O mecanismo de ocultação confirmado e
+funcional para este artefacto continua a ser o espectrograma da diferença estéreo (A-03).
+EOF
+
+find results1 -type f ! -name 'results1-sha256-manifest.txt' -print0 \
+  | sort -z | xargs -0 sha256sum > results1-sha256-manifest.txt
+echo "Manifesto atualizado: $(wc -l < results1-sha256-manifest.txt) ficheiros"
+
+## NOTA DE INTEGRIDADE DO REGISTO
+Os cabeçalhos "## Deep audio analysis" a "## FASE 2d" foram escritos em tempo real durante
+a análise (timestamps originais preservados acima). Os comandos por baixo de cada um foram
+reconstruídos em 2026-09-18 a partir do histórico da shell (`history`), porque não tinham
+sido copiados para este ficheiro no momento da execução — só os títulos e datas o foram.
+As secções "FASE 3" a "FASE 6" (timeline, extract_deepfish.py, correção A-03, testes
+steghide/A-10) nunca tiveram cabeçalho neste ficheiro; foram recuperadas do histórico da
+shell e datadas aqui como "timestamp não capturado ao vivo" — a ordem relativa entre elas
+está correta (preservada pela numeração de linha do `history`), mas a hora exata não é
+verificável. Os outputs e achados destes comandos, contudo, estavam sempre preservados em
+results1/audio-analysis/ com timestamps de ficheiro próprios.

@@ -1,7 +1,104 @@
 ## server.js, README.md, credentials.txt (server-root exposure via directory listing)
 # Provenance: removed 'index.html' from https://fenix.dpss.inesc-id.pt/index.html -> https://fenix.dpss.inesc-id.pt/ returned a directory listing (served by serveIndex() in server.js)
 2026-09-16T19:17:00+00:00
+
+# --- FASE 0 — aquisição inicial via HTTP e registo forense (reconstruído do histórico, eventos #69-72) ---
+# Nota: nesta fase inicial os comandos foram gravados no commands.txt PARTILHADO por engano
+# e depois revertidos (git checkout -- commands.txt); a partir daqui passaram a ser gravados
+# neste ficheiro separado (commands1-server-root.txt), por instrução explícita, para evitar
+# conflitos de merge com os colegas.
+
+ls artifacts/fenix-site/fenix.dpss.inesc-id.pt/
+
+echo "## server.js, README.md, credentials.txt (server-root exposure via directory listing)" >> commands.txt
+date --utc --iso-8601=seconds
+
+echo "# Provenance: removed 'index.html' from https://fenix.dpss.inesc-id.pt/index.html -> https://fenix.dpss.inesc-id.pt/ returned a directory listing (Apache-style, served by serveIndex() in server.js)" >> commands.txt
+
+cd artifacts/fenix-site/fenix.dpss.inesc-id.pt
+
+curl -k -sS -D server.js.headers.txt \
+     "https://fenix.dpss.inesc-id.pt/server.js" -o server.js
+
+curl -k -sS -D README.md.headers.txt \
+     "https://fenix.dpss.inesc-id.pt/README.md" -o README.md
+
+curl -k -sS -D credentials-txt_HTTP-403-response.headers.txt \
+     "https://fenix.dpss.inesc-id.pt/credentials.txt" -o credentials-txt_HTTP-403-response.html
+
+echo "=== HTTP headers: server.js ===";       cat server.js.headers.txt
+echo "=== HTTP headers: README.md ===";       cat README.md.headers.txt
+echo "=== HTTP headers: credentials.txt ==="; cat credentials-txt_HTTP-403-response.headers.txt
+echo "=== body: credentials.txt response ===" ; cat credentials-txt_HTTP-403-response.html
+
+# Registo forense (stat, file, sha256, sha512) dos três ficheiros originais obtidos
+find server.js README.md credentials-txt_HTTP-403-response.html -type f -exec sh -c '
+  for f; do
+    echo "=== $f ==="
+    stat -c "Access: %x
+Modify: %y
+Change: %z
+Birth:  %w
+Size:   %s bytes" "$f"
+    file "$f"
+    sha256sum "$f"
+    sha512sum "$f"
+    echo "---"
+  done
+' sh {} + | tee -a ../../../results/server-root-register.txt
+
+# Cópia de trabalho + verificação de integridade byte a byte contra o original
+cp --preserve=timestamps server.js README.md credentials-txt_HTTP-403-response.html \
+   ../../fenix-site-working-copy/fenix.dpss.inesc-id.pt/
+
+cd ../../fenix-site-working-copy/fenix.dpss.inesc-id.pt
+
+diff <(sha256sum server.js README.md credentials-txt_HTTP-403-response.html) \
+     <(cd ../../fenix-site/fenix.dpss.inesc-id.pt && sha256sum server.js README.md credentials-txt_HTTP-403-response.html) \
+  && echo "OK: cópias de trabalho são idênticas byte a byte em relaçao às versoes originais"
+
+# --- FASE 0b — correção: mover o registo para results1/ e separar de vez do fluxo partilhado ---
+cd ~/csf-lab1/csf-lab1
+mkdir -p results1
+
+{
+  echo "## server.js, README.md, credentials.txt (server-root exposure via directory listing)"
+  echo "# Provenance: removed 'index.html' from https://fenix.dpss.inesc-id.pt/index.html -> https://fenix.dpss.inesc-id.pt/ returned a directory listing (served by serveIndex() in server.js)"
+  date --utc --iso-8601=seconds
+} >> commands1-server-root.txt
+
+mv results/server-root-register.txt results1/
+
 ## Content analysis + text steganalysis — server.js, README.md, credentials.txt
+
+cd ~/csf-lab1/csf-lab1/artifacts/fenix-site-working-copy/fenix.dpss.inesc-id.pt
+
+LOG=../../../commands1-server-root.txt
+OUT=../../../results1
+
+echo "## Content analysis + text steganalysis — server.js, README.md, credentials.txt" >> "$LOG"
+
+# --- server.js ---
+echo "=== server.js ===" | tee -a "$OUT/server_js_keylines.txt"
+wc -lc server.js
+tail -c 150 server.js | hexdump -C | tail -8
+grep -n -E "PHISHING_PORT|appendFile|credentials|redirect|res\.set|serveIndex|dotfiles|node_modules|/var/log" server.js \
+  | tee -a "$OUT/server_js_keylines.txt"
+
+# --- README.md ---
+echo "=== README.md ==="
+cat README.md
+xxd README.md
+
+# --- credentials 403 body ---
+echo "=== credentials-txt_HTTP-403-response.html ==="
+xxd credentials-txt_HTTP-403-response.html
+
+# Registo dos outputs acima no LOG (bloco formatado)
+cd ~/csf-lab1/csf-lab1/artifacts/fenix-site-working-copy/fenix.dpss.inesc-id.pt
+LOG=../../../commands1-server-root.txt
+
+cat >> "$LOG" << 'EOF'
 
 === server.js: wc -lc ===
   76 2287 server.js
@@ -26,13 +123,73 @@ OBSERVATION: matches HTTP Content-Length: 46 exactly. No hidden data.
 === credentials-txt_HTTP-403-response.html: xxd (full file, 9 bytes) ===
 00000000: 466f 7262 6964 6465 6e                   Forbidden
 OBSERVATION: matches HTTP Content-Length: 9 exactly. This is the nginx/Express 403 body, NOT the contents of the real credentials.txt (which remains inaccessible by design per server.js lines 46-49).
-=== Analyst environment (this terminal session) — 2026-09-16T19:28:34+00:00 ===
-Linux kali 7.1.5+kali-arm64 #1 SMP PREEMPT Kali 7.1.5-1kali1 (2026-07-29) aarch64 GNU/Linux
-curl 8.21.0 (aarch64-unknown-linux-gnu) libcurl/8.21.0 OpenSSL/3.6.3 zlib/1.3.2 brotli/1.2.0 zstd/1.5.7 libidn2/2.3.8 libpsl/0.23.3 libssh2/1.11.1 nghttp2/1.70.0 ngtcp2/1.24.0 nghttp3/1.17.0 mit-krb5/1.22.1 OpenLDAP/2.6.14
+EOF
 
-=== Line-terminator anomaly check (file reported: 'with CRLF, LF line terminators') ===
-Total lines (LF count):  76
-Lines ending with CRLF:  75
-Lines ending with LF only: 1
---- LF-only line numbers (if any) ---
-49:  if (/^\/var\/log\/credentials\.log(\/|$)/.test(requestPath)) {
+echo "Gravado. Linhas no LOG agora: $(wc -l < "$LOG")"
+
+# Etiquetagem dos blocos do registo forense com os IDs de artefacto (SRV-01/02/03)
+cd ~/csf-lab1/csf-lab1
+sed -i \
+  -e '0,/=== server.js ===/{s/=== server.js ===/=== [SRV-01] server.js ===/}' \
+  -e '0,/=== README.md ===/{s/=== README.md ===/=== [SRV-02] README.md ===/}' \
+  -e '0,/=== credentials-txt_HTTP-403-response.html ===/{s/=== credentials-txt_HTTP-403-response.html ===/=== [SRV-03] credentials-txt_HTTP-403-response.html ===/}' \
+  results1/server-root-register.txt
+
+grep '===' results1/server-root-register.txt
+
+# Registo do ambiente do analista (reprodutibilidade)
+{
+  echo "=== Analyst environment (this terminal session) — $(date --utc --iso-8601=seconds) ==="
+  uname -a
+  curl --version | head -1
+} >> commands1-server-root.txt
+
+## SRV-01a/02a/03a — registo forense dos ficheiros de headers HTTP (evidência derivada)
+cd ~/csf-lab1/csf-lab1/artifacts/fenix-site/fenix.dpss.inesc-id.pt
+
+for f in server.js.headers.txt README.md.headers.txt credentials-txt_HTTP-403-response.headers.txt; do
+  case "$f" in
+    server.js*) ID="SRV-01a";; README*) ID="SRV-02a";; *) ID="SRV-03a";;
+  esac
+  {
+    echo "=== [$ID] $f ==="
+    stat -c "Access: %x
+Modify: %y
+Change: %z
+Birth:  %w
+Size:   %s bytes" "$f"
+    file "$f"
+    sha256sum "$f"
+    echo "---"
+  } | tee -a ../../../results1/server-root-register.txt
+done
+
+## Strings + verificação de terminadores de linha (CRLF/LF anomaly — a linha 49)
+cd ~/csf-lab1/csf-lab1/artifacts/fenix-site-working-copy/fenix.dpss.inesc-id.pt
+OUT=../../../results1
+LOG=../../../commands1-server-root.txt
+
+strings -n 8 server.js > "$OUT/server_js_strings.txt"
+strings -n 8 README.md > "$OUT/README_md_strings.txt"
+
+{
+  echo ""
+  echo "=== Line-terminator anomaly check (file reported: 'with CRLF, LF line terminators') ==="
+  echo "Total lines (LF count):  $(wc -l < server.js)"
+  echo "Lines ending with CRLF:  $(grep -c $'\r$' server.js)"
+  echo "Lines ending with LF only: $(( $(wc -l < server.js) - $(grep -c $'\r$' server.js) ))"
+  echo "--- LF-only line numbers (if any) ---"
+  grep -n -v $'\r$' server.js | head -20
+} | tee -a "$LOG"
+
+## NOTA DE INTEGRIDADE DO REGISTO
+Este ficheiro estava razoavelmente completo (tinha outputs e observações reais), mas faltavam
+alguns dos comandos literais que geraram esses outputs — nomeadamente a aquisição inicial via
+curl, o registo forense inicial (stat/hash), a cópia de trabalho e a etiquetagem SRV-01/02/03.
+Reconstruído em 2026-09-18 a partir do histórico da shell (eventos #69-72, #75, #78-83 de
+results1/_process/shell-history-full.txt), preservando os outputs e observações que já
+estavam corretamente gravados (o hexdump do server.js, o xxd do README.md e do credentials.txt,
+e a verificação de terminadores de linha CRLF/LF).
+Nota histórica preservada: nos eventos #69-70 os primeiros comandos foram gravados por engano
+no commands.txt PARTILHADO; isso foi corrigido nesse momento (git checkout -- commands.txt) e
+a partir da FASE 0b este ficheiro (commands1-server-root.txt) passou a ser a única gravação.

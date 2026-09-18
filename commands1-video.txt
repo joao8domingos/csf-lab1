@@ -1,13 +1,403 @@
 ## Deep video analysis — Grand Theft Auto VI Trailer 1.mp4 (from .git full-history commit 95f15e90.../Videos)
 2026-09-17T09:37:34+00:00
+cd ~/csf-lab1/csf-lab1
+mkdir -p results1/video-analysis
+
+# Ferramentas instaladas para esta fase
+sudo apt update
+sudo apt install -y ffmpeg mediainfo libimage-exiftool-perl binwalk foremost sox steghide gpac
+# zsteg é gem ruby
+sudo gem install zsteg 2>/dev/null || sudo apt install -y ruby && sudo gem install zsteg
+
+cd ~/csf-lab1/csf-lab1
+LOG=commands1-video.txt
+OUT=results1/video-analysis
+
+echo "## Deep video analysis — Grand Theft Auto VI Trailer 1.mp4 (from .git full-history commit 95f15e90.../Videos)" >> "$LOG"
+date --utc --iso-8601=seconds >> "$LOG"
+
+VDIR="artifacts/fenix-var-git-full-history/95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e/Videos"
+V="$VDIR/Grand Theft Auto VI Trailer 1.mp4"
+
+# Registo completo
+{
+  echo "=== [VID-01] Grand Theft Auto VI Trailer 1.mp4 ==="
+  echo "Provenance: .git full history, commit 95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e, path Videos/"
+  stat -c "Access: %x
+Modify: %y
+Change: %z
+Birth:  %w
+Size:   %s bytes" "$V"
+  file "$V"
+  sha256sum "$V"
+  sha512sum "$V"
+} | tee "$OUT/video-register.txt"
+
+# Cross-check de integridade contra o registo do colega
+echo "--- cross-check vs full-history-hashes.txt ---" | tee -a "$OUT/video-register.txt"
+grep -i "Grand Theft Auto VI Trailer 1.mp4" results/full-history-hashes.txt | tee -a "$OUT/video-register.txt"
+
+# Cópia de trabalho
+mkdir -p artifacts/video-working-copy
+cp --preserve=timestamps "$V" "artifacts/video-working-copy/"
+W="artifacts/video-working-copy/Grand Theft Auto VI Trailer 1.mp4"
+echo "--- working copy integrity ---"
+sha256sum "$V" "$W"
+
+# --- Metadados e estrutura de contentor ---
+W="artifacts/video-working-copy/Grand Theft Auto VI Trailer 1.mp4"
+
+# Metadados completos (device, GPS, encoder, timestamps, comentários)
+exiftool -a -u -g1 "$W" | tee "$OUT/exiftool-full.txt"
+
+# MediaInfo
+mediainfo "$W" | tee "$OUT/mediainfo.txt"
+
+# ffprobe — streams, codecs, duração, frames, metadados
+ffprobe -hide_banner -v quiet -print_format json -show_format -show_streams -show_chapters "$W" \
+  | tee "$OUT/ffprobe.json"
+
+# Estrutura de átomos via pymp4 (se instalou); senão, ffprobe já cobriu o essencial
+python3 -c "
+import subprocess, sys
+try:
+    from pymp4.parser import Box
+    import construct
+    with open(sys.argv[1],'rb') as f:
+        data=f.read()
+    off=0
+    print('OFFSET      SIZE        TYPE')
+    while off < len(data):
+        try:
+            box=Box.parse(data[off:])
+            size=len(Box.build(box))
+            print(f'{off:<11} {size:<11} {box.type.decode(errors=\"replace\")}')
+            if size<=0: break
+            off+=size
+        except Exception as e:
+            print(f'{off:<11} (parse stopped: {e})')
+            break
+    print(f'--- file size: {len(data)} bytes; parsed up to: {off} ---')
+    if off < len(data):
+        print(f'*** TRAILING DATA after last atom: {len(data)-off} bytes ***')
+        print(data[off:off+200].hex())
+" "$W" 2>/dev/null | tee "$OUT/atoms.txt" || echo "pymp4 indisponível — usar ffprobe/mediainfo"
+
+# Dados após o fim lógico do ficheiro
+echo "=== last 64 bytes ===" | tee "$OUT/container-tail.txt"
+tail -c 64 "$W" | xxd | tee -a "$OUT/container-tail.txt"
+
 ## FASE 2 — structure mapping (file is NOT a video; polyglot/embedded-PDF suspected)
 2026-09-17T09:53:29+00:00
+cd ~/csf-lab1/csf-lab1
+OUT=results1/video-analysis
+LOG=commands1-video.txt
+W="artifacts/video-working-copy/Grand Theft Auto VI Trailer 1.mp4"
+
+echo "## FASE 2 — structure mapping (file is NOT a video; polyglot/embedded-PDF suspected)" >> "$LOG"
+date --utc --iso-8601=seconds >> "$LOG"
+
+# 1. Magic bytes reais (início do ficheiro)
+echo "=== magic bytes (first 64) ===" | tee "$OUT/structure-map.txt"
+xxd -l 64 "$W" | tee -a "$OUT/structure-map.txt"
+
+# 2. binwalk — mapear TODAS as assinaturas embebidas
+echo "=== binwalk ===" | tee -a "$OUT/structure-map.txt"
+binwalk "$W" | tee -a "$OUT/binwalk.txt"
+
+# 3. Localizar offsets de todas as assinaturas relevantes
+echo "=== signature offsets ===" | tee -a "$OUT/structure-map.txt"
+python3 << 'PYEOF' | tee -a "$OUT/structure-map.txt"
+data = open("artifacts/video-working-copy/Grand Theft Auto VI Trailer 1.mp4","rb").read()
+print(f"total size: {len(data)} bytes")
+sigs = {
+    "%PDF- (PDF start)": b"%PDF-",
+    "%%EOF (PDF end)":   b"%%EOF",
+    "PK\x03\x04 (zip)": b"PK\x03\x04",
+    "ftyp (MP4)":        b"ftyp",
+    "\x89PNG":          b"\x89PNG",
+    "JPEG \xff\xd8\xff": b"\xff\xd8\xff",
+    "GIF8":              b"GIF8",
+    "ICO \x00\x00\x01\x00 (at 0)": b"\x00\x00\x01\x00",
+    "Rar!":              b"Rar!",
+    "7z \x37\x7A":     b"\x37\x7A\xBC\xAF",
+}
+def all_offsets(hay, needle):
+    offs, i = [], hay.find(needle)
+    while i != -1:
+        offs.append(i)
+        i = hay.find(needle, i+1)
+    return offs
+for label, sig in sigs.items():
+    offs = all_offsets(data, sig)
+    if offs:
+        show = offs[:10]
+        print(f"{label}: {len(offs)} hit(s) -> offsets {show}{' ...' if len(offs)>10 else ''}")
+    else:
+        print(f"{label}: none")
+PYEOF
+
 ## FASE 3 — PDF extraction & analysis (VID-01-A, parent VID-01)
 2026-09-17T10:00:12+00:00
+cd ~/csf-lab1/csf-lab1
+OUT=results1/video-analysis
+LOG=commands1-video.txt
+W="artifacts/video-working-copy/Grand Theft Auto VI Trailer 1.mp4"
+mkdir -p artifacts/video-extracted "$OUT/pdf"
+
+sudo apt install -y poppler-utils mupdf-tools qpdf
+
+echo "## FASE 3 — PDF extraction & analysis (VID-01-A, parent VID-01)" >> "$LOG"
+date --utc --iso-8601=seconds >> "$LOG"
+
+# Extrair o PDF a partir do offset 27
+python3 -c "
+data=open('$W','rb').read()
+open('artifacts/video-extracted/VID-01-A-embedded.pdf','wb').write(data[27:])
+print('written', len(data)-27, 'bytes from offset 27 to EOF')
+"
+PDF=artifacts/video-extracted/VID-01-A-embedded.pdf
+
+# Registo do artefacto derivado
+{
+  echo "=== [VID-01-A] VID-01-A-embedded.pdf ==="
+  echo "Parent: VID-01 | Method: carve from offset 27 (start of %PDF-1.5) to EOF"
+  echo "Registered: $(date --utc --iso-8601=seconds)"
+  stat -c 'Size: %s bytes' "$PDF"
+  file "$PDF"
+  sha256sum "$PDF"
+  sha512sum "$PDF"
+} | tee -a "$OUT/video-register.txt"
+
+# --- Análise do PDF ---
+echo "=== pdfinfo ===" ; pdfinfo "$PDF" 2>&1 | tee "$OUT/pdf/pdfinfo.txt"
+echo "=== metadata (exiftool) ===" ; exiftool -a -u -g1 "$PDF" 2>&1 | tee "$OUT/pdf/pdf-exiftool.txt"
+
+pdftotext "$PDF" "$OUT/pdf/pdf-text.txt" 2>/dev/null
+echo "=== extracted text (first 60 lines) ===" ; head -60 "$OUT/pdf/pdf-text.txt"
+
+echo "=== attachments list ===" ; pdfdetach -list "$PDF" 2>&1 | tee "$OUT/pdf/pdf-attachments.txt"
+mkdir -p artifacts/video-extracted/pdf-attachments
+pdfdetach -saveall -o artifacts/video-extracted/pdf-attachments "$PDF" 2>&1 | tee -a "$OUT/pdf/pdf-attachments.txt"
+
+mkdir -p artifacts/video-extracted/pdf-images
+pdfimages -all "$PDF" artifacts/video-extracted/pdf-images/img 2>&1 | tee "$OUT/pdf/pdfimages-log.txt"
+echo "=== extracted images ===" ; ls -la artifacts/video-extracted/pdf-images/ | tee -a "$OUT/pdf/pdfimages-log.txt"
+
+mkdir -p artifacts/video-extracted/pdf-render
+pdftoppm -png -r 100 -f 1 -l 5 "$PDF" artifacts/video-extracted/pdf-render/page 2>/dev/null
+echo "=== rendered pages ===" ; ls -la artifacts/video-extracted/pdf-render/
+
 ## FASE 3b — full text dump + keyword search + manifest checkpoint
 2026-09-17T10:03:00+00:00
-=== keyword search: password/key/credential/amelia/SEC014/secret ===
+cd ~/csf-lab1/csf-lab1
+OUT=results1/video-analysis
+LOG=commands1-video.txt
+PDF=artifacts/video-extracted/VID-01-A-embedded.pdf
+
+echo "## FASE 3b — full text dump + keyword search + manifest checkpoint" >> "$LOG"
+date --utc --iso-8601=seconds >> "$LOG"
+
+# Texto completo (não só as primeiras 60 linhas)
+wc -l "$OUT/pdf/pdf-text.txt"
+echo "=== keyword search: password/key/credential/amelia/SEC014/secret ===" | tee -a "$LOG"
+grep -n -i -E "password|passwd|credential|secret|key:|SEC014|amelia" "$OUT/pdf/pdf-text.txt" | tee "$OUT/pdf/pdf-text-keywords.txt"
+
+# Findings do vídeo — checkpoint imediato (o que já está confirmado)
+cat > "$OUT/video-findings.md" << 'EOF'
+# Findings — VID-01 / VID-01-A (embedded polyglot document)
+
+Artefactos:
+  VID-01   Grand Theft Auto VI Trailer 1.mp4 (polyglot ICO/PDF, 9,443,926 bytes)
+           source: .git full-history, commit 95f15e90a4ab0df0bdbf514dc108a3b9fbf4ba9e, path Videos/
+  VID-01-A embedded PDF, carved from VID-01 offset 27, 9,443,899 bytes
+           sha256: 9b57779104798e600a0ae083d3de54c9db6f97982931028910bf8a40785225f3
+
+## V-01 — Ficheiro portador é um poliglota, não um vídeo
+OBSERVAÇÃO: `file` classifica o original como "data"; exiftool lê-o como ICO 256x256;
+os últimos 64 bytes contêm estrutura terminal de PDF (endstream/endobj/startxref/%%EOF).
+Magic bytes (offset 0): 00 00 01 00 (assinatura ICO). Offset 27: <!--%PDF-1.5.
+INTERPRETAÇÃO: ficheiro construído deliberadamente como poliglota ICO/PDF, com nome de
+vídeo popular como camuflagem social. Nenhuma ferramenta isolada o identifica corretamente;
+só a combinação file+exiftool+hexdump revela a estrutura real.
+
+## V-02 — PDF embebido é um documento real e legível
+OBSERVAÇÃO: extração a partir do offset 27 produz um PDF válido, 5 páginas, A4,
+Producer: xdvipdfmx (20240305), CreationDate: 30 Apr 2026 12:00:00 WEST.
+Title: "Independent External Technical Assessment Report - Project AMELIA"
+Doc ref: AMA20260041AI. Status: CONDITIONAL ACCEPTANCE. Anomalia referida: SEC014.
+Sem anexos embebidos (pdfdetach -list: 0 embedded files). Sem JavaScript. Não encriptado.
+INTERPRETAÇÃO: o nome do projeto "AMÉLIA/AMELIA" liga este documento diretamente ao
+amelia.pdf dentro de myzip.zip (protegido por password, ainda não quebrada pelo colega).
+HIPÓTESE (inferencial, a confirmar): pode ser uma versão relacionada, anterior, ou
+complementar do mesmo documento — não está confirmado se é byte-idêntico ao amelia.pdf.
+AÇÃO: comparar hash/conteúdo com amelia.pdf assim que este for desencriptado.
+
+## V-03 — Autor/Creator do PDF em branco
+OBSERVAÇÃO: pdfinfo reporta Author e Creator vazios; só Producer (xdvipdfmx) está preenchido.
+INTERPRETAÇÃO: campos de atribuição direta foram removidos ou nunca preenchidos — não
+fornece pista de autoria por esta via. O Producer indica que o PDF foi gerado via LaTeX/XeTeX
+(xdvipdfmx é o backend do XeLaTeX), sugerindo produção "profissional"/documento formal,
+não um simples print-to-PDF.
+
+## V-04 — Estrutura interna ainda por resolver (pendente)
+OBSERVAÇÃO: binwalk sobre o ficheiro original mostrou, dentro do range do obj 1 (o stream de
+9.357.855 bytes que compõe quase todo o ficheiro): possível assinatura ftyp (offset ~260),
+HTML legível (offset 97337-112469), e um PNG 600x527 (offset 112484) — todos ANTES do PDF
+"visível" de 5 páginas (que só começa a construir-se a partir do offset 9357945).
+INTERPRETAÇÃO: o PDF de 5 páginas que abrimos pode não ser todo o conteúdo escondido; o
+stream do obj 1 é maior que o PDF visível e contém as outras camadas (HTML, PNG, possível MP4).
+STATUS: pendente de extração e análise dedicada do stream do obj 1.
+EOF
+
+echo "video-findings.md escrito: $(wc -l < "$OUT/video-findings.md") linhas"
+
+# Atualizar manifesto (Regra 4)
+find results1 -type f ! -name 'results1-sha256-manifest.txt' -print0 \
+  | sort -z | xargs -0 sha256sum > results1-sha256-manifest.txt
+echo "Manifesto atualizado: $(wc -l < results1-sha256-manifest.txt) ficheiros"
+
 ## FASE 4 — full-text keyword sweep + obj1 stream (HTML/PNG layer)
 2026-09-17T10:04:41+00:00
+cd ~/csf-lab1/csf-lab1
+OUT=results1/video-analysis
+LOG=commands1-video.txt
+W="artifacts/video-working-copy/Grand Theft Auto VI Trailer 1.mp4"
+
+echo "## FASE 4 — full-text keyword sweep + obj1 stream (HTML/PNG layer)" >> "$LOG"
+date --utc --iso-8601=seconds >> "$LOG"
+
+# 1. Pesquisa robusta em TODO o texto (case-insensitive, sem depender de acentos)
+echo "=== keyword sweep (full text) ===" | tee "$OUT/pdf/keyword-sweep.txt"
+grep -n -i -E "passwo|senha|pass:|pwd|credential|secret|chave|token|SEC0|am[eé]lia|zip|unlock|key" \
+  "$OUT/pdf/pdf-text.txt" | tee -a "$OUT/pdf/keyword-sweep.txt"
+echo "--- (se vazio, não há keywords óbvias no texto renderizável) ---"
+
+# 2. Extrair o HTML escondido (offsets 97337 a ~112469 do ficheiro original)
+python3 -c "
+data=open('$W','rb').read()
+open('artifacts/video-extracted/VID-01-B-hidden.html','wb').write(data[97337:112469])
+print('HTML carved:', 112469-97337, 'bytes')
+"
+echo "=== hidden HTML (readable strings) ==="
+strings -n 6 artifacts/video-extracted/VID-01-B-hidden.html | tee "$OUT/pdf/hidden-html-strings.txt" | head -40
+
+# 3. Extrair o PNG escondido (offset 112484) — apanhar até ao fim do PNG (IEND)
+python3 -c "
+data=open('$W','rb').read()
+start=112484
+# procurar o IEND do PNG a partir do start
+iend=data.find(b'IEND', start)
+end=iend+8 if iend!=-1 else start+200000
+open('artifacts/video-extracted/VID-01-C-hidden.png','wb').write(data[start:end])
+print('PNG carved:', end-start, 'bytes; IEND at', iend)
+"
+echo "=== hidden PNG identify ==="
+file artifacts/video-extracted/VID-01-C-hidden.png
+sha256sum artifacts/video-extracted/VID-01-C-hidden.png
+
+# Registo dos dois novos derivados
+{
+  echo "=== [VID-01-B] VID-01-B-hidden.html (parent VID-01, carve 97337..112469) ==="
+  file artifacts/video-extracted/VID-01-B-hidden.html; sha256sum artifacts/video-extracted/VID-01-B-hidden.html
+  echo "=== [VID-01-C] VID-01-C-hidden.png (parent VID-01, carve from 112484 to IEND) ==="
+  file artifacts/video-extracted/VID-01-C-hidden.png; sha256sum artifacts/video-extracted/VID-01-C-hidden.png
+} | tee -a "$OUT/video-register.txt"
+
 ## FASE 5 — close video analysis (PDF confirmed as the secret by instructor)
 2026-09-17T10:14:07+00:00
+cd ~/csf-lab1/csf-lab1
+OUT=results1/video-analysis
+LOG=commands1-video.txt
+
+echo "## FASE 5 — close video analysis (PDF confirmed as the secret by instructor)" >> "$LOG"
+date --utc --iso-8601=seconds >> "$LOG"
+
+# Guardar os comentários-chave do HTML escondido (contexto de atribuição)
+grep -n -E "todo:|flag for staging|key:|jason|token" \
+  "$OUT/pdf/hidden-html-strings.txt" | tee "$OUT/pdf/hidden-html-attribution.txt"
+
+# Acrescentar os findings finais
+cat >> "$OUT/video-findings.md" << 'EOF'
+
+## V-05 — Camada HTML escondida com pistas de atribuição (RESOLVE V-04)
+OBSERVAÇÃO: carve dos offsets 97337..112469 produz VID-01-B-hidden.html (15132 bytes), uma
+página HTML "GTA VI leaks / Vice City Insider" com dois comentários HTML deliberados:
+  1. "todo: clean up the dev auth tokens ... ask jason"
+  2. "flag for staging access: TARGET_GTAVI_LEAK_DASHBOARD / key: vl-cty-gta6-2026"
+INTERPRETAÇÃO: o nome "jason" reaparece (já visto no ecossistema do .git do atacante) e há
+uma chave textual (vl-cty-gta6-2026). São artefactos de camuflagem/tema (GTA VI) que também
+funcionam como pistas de atribuição por convergência de persona.
+CONFIANÇA: média — os tokens são plausivelmente "chamariz" temático; o valor está na
+recorrência do identificador "jason" cruzada com outras fontes.
+
+## V-06 — PNG escondido, válido, não sendo o segredo-alvo
+OBSERVAÇÃO: carve do offset 112484 até IEND (573330) produz VID-01-C-hidden.png, PNG válido
+600x527 RGBA (~460 KB), coerente com o "Image Length: 460854" lido pelo exiftool no cabeçalho.
+INTERPRETAÇÃO: camada de imagem embebida na estrutura do poliglota. Não analisada em
+profundidade — ver V-07.
+
+## V-07 — Determinação de âmbito (instructor scoping)
+OBSERVAÇÃO: o docente confirmou que o segredo relevante deste artefacto é o PDF (VID-01-A,
+relatório Project AMÉLIA) e que não é necessária análise adicional do portador.
+DECISÃO: análise do VID-01 encerrada. VID-01-A registado como o segredo. VID-01-B e VID-01-C
+preservados e registados como camadas do poliglota, sem investigação adicional.
+LIMITAÇÃO: esta é uma decisão de âmbito, não uma prova de ausência de mais conteúdo; os
+artefactos ficam preservados caso seja necessário reabrir.
+EOF
+
+echo "video-findings.md agora com $(wc -l < "$OUT/video-findings.md") linhas"
+
+# Entradas de timeline do vídeo
+cat >> "$OUT/video-timeline-entries.txt" << 'EOF'
+2026-04-30T12:00:00 WEST | PDF "Project AMÉLIA" assessment created | PDF CreationDate (VID-01-A pdfinfo) | doc ref AMA20260041AI; internal metadata, not filesystem
+EOF
+
+# Manifesto final
+find results1 -type f ! -name 'results1-sha256-manifest.txt' -print0 \
+  | sort -z | xargs -0 sha256sum > results1-sha256-manifest.txt
+echo "Manifesto: $(wc -l < results1-sha256-manifest.txt) ficheiros"
+
+# Resumo do que ficou registado para este artefacto
+echo "=== Ficheiros do vídeo em results1/ ==="
+find results1/video-analysis -type f | sort
+echo "=== Artefactos extraídos ==="
+ls -la artifacts/video-extracted/
+
+## FASE 6 — cross-check do hash contra o registo do colega (nota de limitação V-08)
+[timestamp não capturado ao vivo — reconstruído a partir do histórico da shell, eventos #139-140, ordem preservada]
+cd ~/csf-lab1/csf-lab1
+# Procurar o registo de hash do colega para este objeto (em qualquer ficheiro dele)
+grep -rn "Grand Theft Auto VI Trailer" results/ commands.txt commands-git.txt 2>/dev/null \
+  | tee -a results1/video-analysis/video-register.txt
+# Se aparecer um sha256, comparar com: 5d3b5f08f35c5d812e0f2c36d58c9c4f2a0b844e2e1f8bd5054a9bc54f8471ca
+# RESULTADO: nenhum registo encontrado — ver V-08
+
+cd ~/csf-lab1/csf-lab1
+cat >> results1/video-analysis/video-findings.md << 'EOF'
+
+## V-08 — Cross-check pendente (nota de limitação)
+OBSERVAÇÃO: pesquisa em results/, commands.txt e commands-git.txt não encontrou nenhum
+registo de hash SHA-256 do colega para "Grand Theft Auto VI Trailer 1.mp4".
+LIMITAÇÃO: a confirmação cruzada e independente do hash de VID-01 fica pendente até o
+colega disponibilizar o seu manifesto de hashes do .git full-history. A integridade da
+CADEIA DE CUSTÓDIA PRÓPRIA está garantida (original vs. working copy: hash idêntico,
+5d3b5f08f35c5d812e0f2c36d58c9c4f2a0b844e2e1f8bd5054a9bc54f8471ca), mas não há ainda uma
+segunda fonte independente a confirmar o mesmo hash para o objeto extraído do .git.
+AÇÃO: pedir ao colega o ficheiro de hashes do full-history extraction (referido no
+commands-git.txt como full-history-hashes.txt) e reconciliar quando disponível.
+EOF
+echo "V-08 acrescentado — capítulo do vídeo fechado."
+
+## NOTA DE INTEGRIDADE DO REGISTO
+Os cabeçalhos "## Deep video analysis" a "## FASE 5" foram escritos em tempo real durante a
+análise (timestamps originais preservados acima). Os comandos por baixo de cada um foram
+reconstruídos em 2026-09-18 a partir do histórico da shell (eventos #119-128), porque não
+tinham sido copiados para este ficheiro no momento da execução — só os títulos e datas o
+foram. A secção "FASE 6" (cross-check / V-08, eventos #139-140) nunca teve cabeçalho neste
+ficheiro; foi recuperada do mesmo histórico e a sua ordem relativa é fiável (numeração de
+eventos), mas a hora exata não é verificável.
+Fonte da reconstrução: results1/_process/shell-history-full.txt (225 eventos, sessão zsh
+iniciada na instalação da VM; dump preservado no repositório como evidência do processo).
+Os outputs e achados destes comandos estavam sempre preservados em results1/video-analysis/
+com timestamps de ficheiro próprios — a lacuna era apenas no registo dos comandos.
